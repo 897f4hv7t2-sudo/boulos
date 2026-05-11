@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact — SOLARA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="page-loader">
+  <div class="loader-ring"></div>
+  <span class="loader-logo">SOLARA</span>
+</div>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">SOLARA</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html" class="active">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="cart-btn" aria-label="Cart">🛒<span class="cart-count"></span></button>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<nav class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="shop.html">Shop</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<div class="cart-overlay"></div>
+<aside id="cart-drawer">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button class="cart-close">✕</button>
+  </div>
+  <div class="cart-items"></div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-price">$0</span>
+    </div>
+    <button class="btn btn-primary cart-checkout-btn" onclick="showToast('Checkout coming soon!','🔒')">Checkout</button>
+    <p class="cart-note">Free shipping on orders over $300</p>
+  </div>
+</aside>
+
+<div id="discount-popup">
+  <div class="popup-bg"></div>
+  <div class="popup-box">
+    <button class="popup-close">✕</button>
+    <span class="popup-tag">Welcome Offer</span>
+    <div class="popup-headline">10% Off</div>
+    <p class="popup-sub">Your first order. Enter your email to unlock the code.</p>
+    <form class="popup-form">
+      <input type="email" placeholder="your@email.com" required>
+      <button type="submit" class="btn btn-primary">Claim Offer</button>
+    </form>
+    <span class="popup-skip">No thanks, I'll pay full price</span>
+  </div>
+</div>
+
+<!-- ═══════ Contact Hero ═══════ -->
+<div style="padding:calc(var(--nav-h) + 3rem) 5% 2rem;text-align:center;position:relative">
+  <span class="section-label" data-reveal>Get In Touch</span>
+  <h1 class="section-title" data-reveal>We'd Love to Hear From You</h1>
+  <div class="gold-line" style="margin:1.25rem auto" data-reveal></div>
+  <p class="section-sub" style="margin:0 auto" data-reveal>Questions about your order, a partnership, or just want to talk eyewear? We're here.</p>
+</div>
+
+<!-- ═══════ Contact Content ═══════ -->
+<main class="contact-page">
+  <div class="contact-grid">
+
+    <!-- Info -->
+    <div class="contact-info" data-reveal="left">
+      <span class="section-label">Contact Details</span>
+      <h2 class="section-title" style="font-size:1.6rem;margin-bottom:0.5rem">Reach Us Directly</h2>
+      <div class="gold-line"></div>
+      <p class="section-sub">We respond to every message within 24 hours. Usually much faster.</p>
+
+      <div class="contact-items" style="margin-top:2rem">
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div>
+            <div class="contact-item-title">Email</div>
+            <div class="contact-item-text">hello@solaraeyewear.com</div>
+            <div class="contact-item-text" style="margin-top:.2rem;font-size:.8rem">orders@solaraeyewear.com</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div>
+            <div class="contact-item-title">Phone</div>
+            <div class="contact-item-text">+1 (800) SOL-ARA1</div>
+            <div class="contact-item-text" style="margin-top:.2rem;font-size:.8rem">Mon–Fri, 9am–6pm EST</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div>
+            <div class="contact-item-title">Studio</div>
+            <div class="contact-item-text">Via della Moda 42<br>Milan, 20121 — Italy</div>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">💬</div>
+          <div>
+            <div class="contact-item-title">Live Chat</div>
+            <div class="contact-item-text">Available on our website<br>Mon–Sat, 10am–8pm CET</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Social -->
+      <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border)">
+        <div class="sidebar-title" style="margin-bottom:1rem">Follow SOLARA</div>
+        <div style="display:flex;gap:.75rem">
+          <a href="#" class="social-link" title="Instagram">📷</a>
+          <a href="#" class="social-link" title="Twitter">𝕏</a>
+          <a href="#" class="social-link" title="Pinterest">📌</a>
+          <a href="#" class="social-link" title="TikTok">🎵</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form -->
+    <div class="contact-form-wrap" data-reveal="right">
+      <h3>Send a Message</h3>
+      <form class="contact-form">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input type="text" class="form-input" placeholder="Alexandra" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input type="text" class="form-input" placeholder="Chen" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" class="form-input" placeholder="you@email.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Phone (Optional)</label>
+            <input type="tel" class="form-input" placeholder="+1 (000) 000-0000">
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Subject</label>
+            <select class="form-input">
+              <option value="">Select a topic...</option>
+              <option>Order Inquiry</option>
+              <option>Product Question</option>
+              <option>Returns & Warranty</option>
+              <option>Wholesale / Partnership</option>
+              <option>Press & Media</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group full">
+            <label class="form-label">Your Message</label>
+            <textarea class="form-input" placeholder="Tell us how we can help..." required></textarea>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary form-submit">Send Message</button>
+      </form>
+
+      <div class="form-success">
+        <span class="check">✓</span>
+        <h3 style="font-family:'Playfair Display',serif;margin-bottom:.5rem">Message Received!</h3>
+        <p style="color:var(--muted);font-size:.88rem">We'll get back to you within 24 hours.<br>In the meantime, explore our collection.</p>
+        <a href="shop.html" class="btn btn-outline" style="margin-top:1.5rem">Browse Collection</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ FAQ ═══════ -->
+  <section style="margin-top:5rem;padding-top:5rem;border-top:1px solid var(--border)">
+    <div class="section-header centered" data-reveal style="margin-bottom:2.5rem">
+      <span class="section-label">Quick Answers</span>
+      <h2 class="section-title" style="font-size:1.8rem">Frequently Asked Questions</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;max-width:900px;margin:0 auto">
+      <div class="value-card" data-reveal>
+        <h3 class="value-title" style="font-size:.95rem;margin-bottom:.5rem">How long does shipping take?</h3>
+        <p class="value-text">Standard shipping is 3–5 business days. Express 1–2 days. Free standard shipping on orders over $300. We ship worldwide.</p>
+      </div>
+      <div class="value-card" data-reveal>
+        <h3 class="value-title" style="font-size:.95rem;margin-bottom:.5rem">What's your return policy?</h3>
+        <p class="value-text">30-day hassle-free returns on unworn pairs in original packaging. Start a return directly from your order confirmation email.</p>
+      </div>
+      <div class="value-card" data-reveal>
+        <h3 class="value-title" style="font-size:.95rem;margin-bottom:.5rem">Does the warranty cover scratches?</h3>
+        <p class="value-text">Our lifetime warranty covers manufacturing defects and hardware failures. Lens scratches from normal wear are not covered, but we offer replacement lenses at cost.</p>
+      </div>
+      <div class="value-card" data-reveal>
+        <h3 class="value-title" style="font-size:.95rem;margin-bottom:.5rem">Do you offer prescription lenses?</h3>
+        <p class="value-text">Yes! Send us your prescription after purchase and our optical partners will fit prescription lenses into any SOLARA frame. Additional fees apply.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo" style="display:inline-block;margin-bottom:1rem">SOLARA</a>
+      <p>Where luxury meets vision. Handcrafted eyewear for those who see the world differently.</p>
+      <div class="footer-social">
+        <a href="#" class="social-link">📷</a>
+        <a href="#" class="social-link">𝕏</a>
+        <a href="#" class="social-link">📌</a>
+        <a href="#" class="social-link">🎵</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="shop.html">All Styles</a></li>
+        <li><a href="shop.html?cat=men">Men</a></li>
+        <li><a href="shop.html?cat=women">Women</a></li>
+        <li><a href="shop.html?cat=unisex">Unisex</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Newsletter</h4>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:1rem">New drops. Early access. Zero spam.</p>
+      <div class="footer-newsletter">
+        <form>
+          <input type="email" placeholder="your@email.com" required>
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+          <p class="success-msg">✓ You're on the list!</p>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 SOLARA. All rights reserved.</p>
+    <p><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Shipping</a></p>
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+<button id="back-top" aria-label="Back to top">↑</button>
+
+<script src="app.js"></script>
+</body>
+</html>

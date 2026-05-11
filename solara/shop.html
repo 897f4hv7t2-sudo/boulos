@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shop — SOLARA</title>
+  <meta name="description" content="Browse the full SOLARA collection of premium handcrafted sunglasses.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="page-loader">
+  <div class="loader-ring"></div>
+  <span class="loader-logo">SOLARA</span>
+</div>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">SOLARA</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html" class="active">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="cart-btn" aria-label="Cart">🛒<span class="cart-count"></span></button>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<nav class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="shop.html">Shop</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<div class="cart-overlay"></div>
+<aside id="cart-drawer">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button class="cart-close">✕</button>
+  </div>
+  <div class="cart-items"></div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-price">$0</span>
+    </div>
+    <button class="btn btn-primary cart-checkout-btn" onclick="showToast('Checkout coming soon!','🔒')">Checkout</button>
+    <p class="cart-note">Free shipping on orders over $300</p>
+  </div>
+</aside>
+
+<div id="discount-popup">
+  <div class="popup-bg"></div>
+  <div class="popup-box">
+    <button class="popup-close">✕</button>
+    <span class="popup-tag">Welcome Offer</span>
+    <div class="popup-headline">10% Off</div>
+    <p class="popup-sub">Your first order. Enter your email to unlock the code.</p>
+    <form class="popup-form">
+      <input type="email" placeholder="your@email.com" required>
+      <button type="submit" class="btn btn-primary">Claim Offer</button>
+    </form>
+    <span class="popup-skip">No thanks, I'll pay full price</span>
+  </div>
+</div>
+
+<!-- Shop Hero -->
+<div class="shop-hero">
+  <span class="section-label" data-reveal>Full Collection</span>
+  <h1 class="section-title" data-reveal style="max-width:none">The SOLARA Edit</h1>
+  <div class="gold-line" style="margin:1.25rem auto" data-reveal></div>
+  <p class="section-sub" style="margin:0 auto" data-reveal>12 styles. One standard: exceptional.</p>
+</div>
+
+<!-- Shop Layout -->
+<div class="shop-layout">
+
+  <!-- Sidebar -->
+  <aside class="shop-sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Category</div>
+      <div class="filter-group">
+        <label class="filter-option">
+          <input type="radio" name="category" value="all" checked> All Styles
+        </label>
+        <label class="filter-option">
+          <input type="radio" name="category" value="men"> Men
+        </label>
+        <label class="filter-option">
+          <input type="radio" name="category" value="women"> Women
+        </label>
+        <label class="filter-option">
+          <input type="radio" name="category" value="unisex"> Unisex
+        </label>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Price Range</div>
+      <div class="price-range-wrap">
+        <input type="range" class="price-range" id="price-range" min="100" max="500" value="500" step="25">
+        <div class="price-labels">
+          <span>$100</span>
+          <span id="price-label">Up to $500</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Sort By</div>
+      <select class="sort-select" id="sort-select" style="width:100%;margin-top:.25rem">
+        <option value="featured">Featured</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="rating">Top Rated</option>
+        <option value="newest">Newest</option>
+      </select>
+    </div>
+
+    <button class="btn btn-ghost sidebar-reset">Reset Filters</button>
+  </aside>
+
+  <!-- Main -->
+  <main class="shop-main">
+    <div class="shop-toolbar">
+      <p class="results-count" id="results-count"><span>12</span> styles found</p>
+    </div>
+    <div class="products-grid" id="shop-grid">
+      <!-- Populated by JS -->
+    </div>
+  </main>
+</div>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo" style="display:inline-block;margin-bottom:1rem">SOLARA</a>
+      <p>Where luxury meets vision. Handcrafted eyewear for those who see the world differently.</p>
+      <div class="footer-social">
+        <a href="#" class="social-link">📷</a>
+        <a href="#" class="social-link">𝕏</a>
+        <a href="#" class="social-link">📌</a>
+        <a href="#" class="social-link">🎵</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="shop.html">All Styles</a></li>
+        <li><a href="shop.html?cat=men">Men</a></li>
+        <li><a href="shop.html?cat=women">Women</a></li>
+        <li><a href="shop.html?cat=unisex">Unisex</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Newsletter</h4>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:1rem">New drops. Early access. Zero spam.</p>
+      <div class="footer-newsletter">
+        <form>
+          <input type="email" placeholder="your@email.com" required>
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+          <p class="success-msg">✓ You're on the list!</p>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 SOLARA. All rights reserved.</p>
+    <p><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Shipping</a></p>
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+<button id="back-top" aria-label="Back to top">↑</button>
+
+<script src="app.js"></script>
+</body>
+</html>

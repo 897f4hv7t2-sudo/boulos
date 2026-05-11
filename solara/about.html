@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — SOLARA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="page-loader">
+  <div class="loader-ring"></div>
+  <span class="loader-logo">SOLARA</span>
+</div>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">SOLARA</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html" class="active">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="cart-btn" aria-label="Cart">🛒<span class="cart-count"></span></button>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<nav class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="shop.html">Shop</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<div class="cart-overlay"></div>
+<aside id="cart-drawer">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button class="cart-close">✕</button>
+  </div>
+  <div class="cart-items"></div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-price">$0</span>
+    </div>
+    <button class="btn btn-primary cart-checkout-btn" onclick="showToast('Checkout coming soon!','🔒')">Checkout</button>
+    <p class="cart-note">Free shipping on orders over $300</p>
+  </div>
+</aside>
+
+<div id="discount-popup">
+  <div class="popup-bg"></div>
+  <div class="popup-box">
+    <button class="popup-close">✕</button>
+    <span class="popup-tag">Welcome Offer</span>
+    <div class="popup-headline">10% Off</div>
+    <p class="popup-sub">Your first order. Enter your email to unlock the code.</p>
+    <form class="popup-form">
+      <input type="email" placeholder="your@email.com" required>
+      <button type="submit" class="btn btn-primary">Claim Offer</button>
+    </form>
+    <span class="popup-skip">No thanks, I'll pay full price</span>
+  </div>
+</div>
+
+<!-- ═══════ About Hero ═══════ -->
+<section class="about-hero">
+  <div class="about-hero-bg"></div>
+  <div class="about-hero-content">
+    <span class="section-label" data-reveal>Our Story</span>
+    <h1 class="section-title" data-reveal style="font-size:clamp(2.5rem,5vw,4.5rem)">
+      Born from a Belief That<br><em style="font-style:italic;color:var(--gold)">Light Deserves Respect</em>
+    </h1>
+    <div class="gold-line" data-reveal></div>
+    <p class="section-sub" data-reveal style="max-width:580px">
+      SOLARA began with a simple conviction: luxury shouldn't be a compromise. Every frame we create is proof of that conviction.
+    </p>
+  </div>
+</section>
+
+<!-- ═══════ Story ═══════ -->
+<section class="about-story">
+  <div class="about-img" data-reveal="left">
+    <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80"
+         alt="SOLARA Atelier"
+         onerror="this.parentElement.style.background='linear-gradient(135deg,#1a1a2e,#0d0d18)'">
+    <div class="about-img-badge">
+      <span class="big">2018</span>
+      <span class="sm">Est. Milan</span>
+    </div>
+  </div>
+  <div class="about-text" data-reveal="right">
+    <span class="section-label">The Origin</span>
+    <h2 class="section-title">From Milan, to the World</h2>
+    <div class="gold-line"></div>
+    <p class="section-sub">Where the craft of luxury eyewear was reinvented for a new generation.</p>
+    <p>In 2018, three friends — a materials scientist, a fashion editor, and a master optician — sat in a café in Milan arguing about why truly exceptional sunglasses didn't exist at a price that didn't feel like extortion.</p>
+    <p>They spent two years visiting artisan workshops across the Veneto region, sourcing the finest bio-acetate sheets, commissioning custom titanium alloys, and working with optical labs to develop proprietary polarized lens technology.</p>
+    <p>SOLARA launched with six styles. They sold out in eleven days.</p>
+    <p>Six years later, we're still driven by the same argument in that café: that design, materials, and optics don't have to be at war with each other — or with your conscience.</p>
+    <div style="margin-top:2rem">
+      <a href="shop.html" class="btn btn-primary">Shop the Collection</a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ Mission ═══════ -->
+<section class="section" style="background:var(--bg2)">
+  <div class="section-header centered" data-reveal>
+    <span class="section-label">Our Mission</span>
+    <h2 class="section-title">Principles We Won't Compromise</h2>
+    <div class="gold-line"></div>
+  </div>
+  <div class="values-grid">
+    <div class="value-card" data-reveal>
+      <div class="value-icon">🌿</div>
+      <h3 class="value-title">Sustainability First</h3>
+      <p class="value-text">Our frames are made from bio-acetate derived from cotton and wood pulp. Packaging is 100% recycled and plastic-free. Our workshops run on renewable energy.</p>
+    </div>
+    <div class="value-card" data-reveal>
+      <div class="value-icon">🤝</div>
+      <h3 class="value-title">Fair Artisanship</h3>
+      <p class="value-text">Every craftsperson in our Italian workshops is paid above-industry wages with full benefits. We believe in the humans behind the craft as much as the craft itself.</p>
+    </div>
+    <div class="value-card" data-reveal>
+      <div class="value-icon">🔬</div>
+      <h3 class="value-title">Optical Excellence</h3>
+      <p class="value-text">Our lenses undergo 14 quality checks before reaching you. UV400, polarization, anti-reflective coating, and scratch resistance — non-negotiable on every pair.</p>
+    </div>
+    <div class="value-card" data-reveal>
+      <div class="value-icon">♾️</div>
+      <h3 class="value-title">Built to Last</h3>
+      <p class="value-text">We offer lifetime repair on every pair we've ever sold. If it breaks from a defect, we fix it. No questions, no asterisks. This isn't a policy — it's a promise.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ Team ═══════ -->
+<section class="team-section">
+  <div class="section-header" data-reveal>
+    <span class="section-label">The People</span>
+    <h2 class="section-title">Meet the Founders</h2>
+    <div class="gold-line"></div>
+  </div>
+  <div class="team-grid">
+    <div class="team-card" data-reveal>
+      <div class="team-img">
+        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Marco Ferretti"
+             onerror="this.parentElement.style.background='var(--bg2)'">
+      </div>
+      <div class="team-info">
+        <div class="team-name">Marco Ferretti</div>
+        <div class="team-role">Co-founder & CEO</div>
+      </div>
+    </div>
+    <div class="team-card" data-reveal>
+      <div class="team-img">
+        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" alt="Elena Vasquez"
+             onerror="this.parentElement.style.background='var(--bg2)'">
+      </div>
+      <div class="team-info">
+        <div class="team-name">Elena Vasquez</div>
+        <div class="team-role">Co-founder & Creative Director</div>
+      </div>
+    </div>
+    <div class="team-card" data-reveal>
+      <div class="team-img">
+        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" alt="Dr. Kenji Mori"
+             onerror="this.parentElement.style.background='var(--bg2)'">
+      </div>
+      <div class="team-info">
+        <div class="team-name">Dr. Kenji Mori</div>
+        <div class="team-role">Co-founder & Head of Optics</div>
+      </div>
+    </div>
+    <div class="team-card" data-reveal>
+      <div class="team-img">
+        <img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80" alt="Sofia Marchetti"
+             onerror="this.parentElement.style.background='var(--bg2)'">
+      </div>
+      <div class="team-info">
+        <div class="team-name">Sofia Marchetti</div>
+        <div class="team-role">Head of Design</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ Numbers ═══════ -->
+<section class="section" style="background:var(--card);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2rem;text-align:center">
+    <div data-reveal>
+      <div class="stat-num" style="font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold);display:block">6</div>
+      <div style="font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)">Years of Craft</div>
+    </div>
+    <div data-reveal>
+      <div class="stat-num" style="font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold);display:block">12</div>
+      <div style="font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)">Iconic Styles</div>
+    </div>
+    <div data-reveal>
+      <div class="stat-num" style="font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold);display:block">40+</div>
+      <div style="font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)">Countries Reached</div>
+    </div>
+    <div data-reveal>
+      <div class="stat-num" style="font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold);display:block">4.8★</div>
+      <div style="font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)">Average Rating</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="section" style="text-align:center">
+  <div data-reveal>
+    <span class="section-label">The Collection</span>
+    <h2 class="section-title">Ready to See Differently?</h2>
+    <div class="gold-line" style="margin:1.5rem auto"></div>
+    <a href="shop.html" class="btn btn-primary" style="padding:1.1rem 3rem">Explore All Styles</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo" style="display:inline-block;margin-bottom:1rem">SOLARA</a>
+      <p>Where luxury meets vision. Handcrafted eyewear for those who see the world differently.</p>
+      <div class="footer-social">
+        <a href="#" class="social-link">📷</a>
+        <a href="#" class="social-link">𝕏</a>
+        <a href="#" class="social-link">📌</a>
+        <a href="#" class="social-link">🎵</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="shop.html">All Styles</a></li>
+        <li><a href="shop.html?cat=men">Men</a></li>
+        <li><a href="shop.html?cat=women">Women</a></li>
+        <li><a href="shop.html?cat=unisex">Unisex</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Newsletter</h4>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:1rem">New drops. Early access. Zero spam.</p>
+      <div class="footer-newsletter">
+        <form>
+          <input type="email" placeholder="your@email.com" required>
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+          <p class="success-msg">✓ You're on the list!</p>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 SOLARA. All rights reserved.</p>
+    <p><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Shipping</a></p>
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+<button id="back-top" aria-label="Back to top">↑</button>
+
+<script src="app.js"></script>
+</body>
+</html>

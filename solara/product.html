@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Product — SOLARA</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="page-loader">
+  <div class="loader-ring"></div>
+  <span class="loader-logo">SOLARA</span>
+</div>
+
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">SOLARA</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="shop.html">Shop</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="contact.html">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="cart-btn" aria-label="Cart">🛒<span class="cart-count"></span></button>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<nav class="mobile-menu">
+  <a href="index.html">Home</a>
+  <a href="shop.html">Shop</a>
+  <a href="about.html">About</a>
+  <a href="contact.html">Contact</a>
+</nav>
+
+<div class="cart-overlay"></div>
+<aside id="cart-drawer">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button class="cart-close">✕</button>
+  </div>
+  <div class="cart-items"></div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-price">$0</span>
+    </div>
+    <button class="btn btn-primary cart-checkout-btn" onclick="showToast('Checkout coming soon!','🔒')">Checkout</button>
+    <p class="cart-note">Free shipping on orders over $300</p>
+  </div>
+</aside>
+
+<div id="discount-popup">
+  <div class="popup-bg"></div>
+  <div class="popup-box">
+    <button class="popup-close">✕</button>
+    <span class="popup-tag">Welcome Offer</span>
+    <div class="popup-headline">10% Off</div>
+    <p class="popup-sub">Your first order. Enter your email to unlock the code.</p>
+    <form class="popup-form">
+      <input type="email" placeholder="your@email.com" required>
+      <button type="submit" class="btn btn-primary">Claim Offer</button>
+    </form>
+    <span class="popup-skip">No thanks, I'll pay full price</span>
+  </div>
+</div>
+
+<!-- ═══════ Product Page ═══════ -->
+<main class="product-page">
+
+  <!-- Breadcrumb -->
+  <div class="breadcrumb">
+    <a href="index.html">Home</a>
+    <span class="breadcrumb-sep">›</span>
+    <a href="shop.html">Shop</a>
+    <span class="breadcrumb-sep">›</span>
+    <span id="breadcrumb-name">Product</span>
+  </div>
+
+  <!-- Product Grid -->
+  <div class="product-page-grid">
+
+    <!-- Gallery -->
+    <div class="product-gallery">
+      <div class="main-img">
+        <img src="" alt="Product Image" id="main-product-img">
+      </div>
+      <div class="thumb-row"></div>
+    </div>
+
+    <!-- Details -->
+    <div class="product-detail">
+      <div class="detail-category"></div>
+      <h1 class="detail-name"></h1>
+
+      <div class="detail-rating">
+        <div class="detail-stars"></div>
+        <span class="detail-review-count"></span>
+      </div>
+
+      <div class="detail-price-row">
+        <span class="detail-price"></span>
+        <span class="detail-price-old"></span>
+        <span class="detail-badge"></span>
+      </div>
+
+      <p class="detail-desc"></p>
+
+      <!-- Color -->
+      <div class="option-group">
+        <div class="option-label">Color: <span id="selected-color">Black</span></div>
+        <div class="color-options"></div>
+      </div>
+
+      <!-- Size -->
+      <div class="option-group">
+        <div class="option-label">Frame Size: <span id="selected-size">M</span></div>
+        <div class="size-options"></div>
+        <p style="font-size:.75rem;color:var(--muted);margin-top:.6rem">
+          S = 50-52mm · M = 53-55mm · L = 56-58mm · XL = 59-61mm
+        </p>
+      </div>
+
+      <!-- Quantity -->
+      <div class="option-group">
+        <div class="option-label">Quantity</div>
+        <div class="qty-selector">
+          <button class="qty-dec">−</button>
+          <input type="number" class="qty-input" value="1" min="1" max="10" readonly>
+          <button class="qty-inc">+</button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="detail-actions">
+        <button class="btn btn-primary add-cart-btn">Add to Cart</button>
+        <button class="wishlist-btn" title="Save to Wishlist">♡</button>
+      </div>
+
+      <!-- Meta -->
+      <div class="detail-meta">
+        <div class="meta-row">
+          <span>SKU</span>
+          <span class="meta-sku">—</span>
+        </div>
+        <div class="meta-row">
+          <span>Material</span>
+          <span>Premium Acetate / Titanium</span>
+        </div>
+        <div class="meta-row">
+          <span>Lens</span>
+          <span>UV400 Polarized</span>
+        </div>
+        <div class="meta-row">
+          <span>Origin</span>
+          <span>Handcrafted in Italy</span>
+        </div>
+        <div class="meta-row">
+          <span>Warranty</span>
+          <span>Lifetime Craftsmanship</span>
+        </div>
+      </div>
+
+      <!-- Trust badges -->
+      <div style="display:flex;gap:1.5rem;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap">
+        <div style="display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--muted)">
+          🚚 <span>Free shipping over $300</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--muted)">
+          ↩️ <span>30-day returns</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--muted)">
+          🔒 <span>Secure checkout</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ Reviews ═══════ -->
+  <div class="reviews-section">
+    <div class="reviews-header">
+      <div>
+        <span class="section-label">Customer Reviews</span>
+        <h2 class="section-title" style="font-size:1.8rem">What Customers Say</h2>
+      </div>
+      <a href="#write-review" class="btn btn-outline">Write a Review</a>
+    </div>
+
+    <div class="reviews-summary"></div>
+
+    <div class="review-list"></div>
+
+    <!-- Write Review -->
+    <div class="write-review" id="write-review">
+      <h4>Share Your Experience</h4>
+      <div class="star-picker">
+        <span class="star-pick">★</span>
+        <span class="star-pick">★</span>
+        <span class="star-pick">★</span>
+        <span class="star-pick">★</span>
+        <span class="star-pick">★</span>
+      </div>
+      <form class="review-form">
+        <input type="text" name="name" placeholder="Your name" required>
+        <textarea name="review" placeholder="Tell us about your experience..." required></textarea>
+        <button type="submit" class="btn btn-primary">Submit Review</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ═══════ Related ═══════ -->
+  <section style="margin-top:5rem;padding-top:4rem;border-top:1px solid var(--border)">
+    <div class="section-header" style="margin-bottom:2.5rem">
+      <span class="section-label">You May Also Like</span>
+      <h2 class="section-title" style="font-size:1.8rem">Related Styles</h2>
+    </div>
+    <div class="products-grid" id="related-grid"></div>
+  </section>
+
+</main>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a href="index.html" class="nav-logo" style="display:inline-block;margin-bottom:1rem">SOLARA</a>
+      <p>Where luxury meets vision. Handcrafted eyewear for those who see the world differently.</p>
+      <div class="footer-social">
+        <a href="#" class="social-link">📷</a>
+        <a href="#" class="social-link">𝕏</a>
+        <a href="#" class="social-link">📌</a>
+        <a href="#" class="social-link">🎵</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Shop</h4>
+      <ul>
+        <li><a href="shop.html">All Styles</a></li>
+        <li><a href="shop.html?cat=men">Men</a></li>
+        <li><a href="shop.html?cat=women">Women</a></li>
+        <li><a href="shop.html?cat=unisex">Unisex</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="contact.html">Contact</a></li>
+        <li><a href="#">Sustainability</a></li>
+        <li><a href="#">Press</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Newsletter</h4>
+      <p style="font-size:.82rem;color:var(--muted);margin-bottom:1rem">New drops. Early access. Zero spam.</p>
+      <div class="footer-newsletter">
+        <form>
+          <input type="email" placeholder="your@email.com" required>
+          <button type="submit" class="btn btn-primary">Subscribe</button>
+          <p class="success-msg">✓ You're on the list!</p>
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2024 SOLARA. All rights reserved.</p>
+    <p><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Shipping</a></p>
+  </div>
+</footer>
+
+<div id="toast-container"></div>
+<button id="back-top" aria-label="Back to top">↑</button>
+
+<script src="app.js"></script>
+</body>
+</html>
