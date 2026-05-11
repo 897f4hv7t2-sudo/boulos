@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOLARA — Premium Sunglasses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#08080f; --bg2:#10101a; --card:#111118;
+  --border:rgba(201,168,76,0.18); --gold:#c9a84c; --gold-lt:#e8c96a;
+  --gold-dim:rgba(201,168,76,0.12); --white:#f5f5f0; --muted:#7a7a8a;
+  --danger:#e05252; --nav-h:72px; --radius:12px; --radius-lg:20px;
+  --ease:cubic-bezier(0.25,0.46,0.45,0.94);
+  --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;line-height:1.6;overflow-x:hidden}
+a{color:inherit;text-decoration:none;cursor:pointer}
+ul{list-style:none}
+img{display:block;max-width:100%}
+button{cursor:pointer;border:none;background:none;font-family:inherit}
+input,textarea,select{font-family:inherit}
+
+/* Loader */
+#page-loader{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s,visibility .6s}
+#page-loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+.loader-ring{width:60px;height:60px;border:2px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .9s linear infinite}
+.loader-logo{position:absolute;font-family:'Playfair Display',serif;font-size:13px;letter-spacing:4px;color:var(--gold)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Pages */
+.page{display:none}
+.page.active{display:block}
+
+/* Nav */
+#navbar{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(8,8,15,.85);backdrop-filter:blur(18px);border-bottom:1px solid transparent;display:flex;align-items:center;justify-content:space-between;padding:0 5%;z-index:1000;transition:border-color .3s,background .3s}
+#navbar.scrolled{border-bottom-color:var(--border);background:rgba(8,8,15,.97)}
+.nav-logo{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;letter-spacing:6px;color:var(--gold);text-transform:uppercase;transition:opacity .2s;cursor:pointer}
+.nav-logo:hover{opacity:.8}
+.nav-links{display:flex;gap:2.5rem;align-items:center}
+.nav-links a{font-size:.8rem;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);transition:color .2s;position:relative;cursor:pointer}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--gold);transition:width .3s var(--ease)}
+.nav-links a:hover,.nav-links a.active{color:var(--white)}
+.nav-links a:hover::after,.nav-links a.active::after{width:100%}
+.nav-actions{display:flex;align-items:center;gap:1.2rem}
+.cart-btn{position:relative;width:42px;height:42px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1.1rem;transition:background .2s,transform .2s}
+.cart-btn:hover{background:rgba(201,168,76,.22);transform:scale(1.05)}
+.cart-count{position:absolute;top:-4px;right:-4px;width:18px;height:18px;background:var(--gold);color:var(--bg);font-size:.65rem;font-weight:700;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(0);transition:opacity .2s,transform .3s var(--ease-spring)}
+.cart-count.visible{opacity:1;transform:scale(1)}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:6px}
+.hamburger span{width:22px;height:1.5px;background:var(--white);transition:transform .3s,opacity .3s}
+.hamburger.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.hamburger.open span:nth-child(2){opacity:0}
+.hamburger.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.mobile-menu{display:none;position:fixed;top:var(--nav-h);left:0;right:0;background:rgba(8,8,15,.98);backdrop-filter:blur(20px);padding:2rem 5%;flex-direction:column;gap:1.5rem;border-bottom:1px solid var(--border);z-index:999}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:1rem;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:.5rem 0;border-bottom:1px solid var(--border);cursor:pointer}
+.mobile-menu a:hover{color:var(--gold)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.85rem 2.2rem;border-radius:4px;font-size:.78rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;transition:transform .2s var(--ease),box-shadow .2s,background .2s,color .2s;cursor:pointer}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0)}
+.btn-primary{background:var(--gold);color:var(--bg);box-shadow:0 4px 24px rgba(201,168,76,.25)}
+.btn-primary:hover{background:var(--gold-lt);box-shadow:0 8px 32px rgba(201,168,76,.4)}
+.btn-outline{background:transparent;color:var(--gold);border:1px solid var(--gold)}
+.btn-outline:hover{background:var(--gold-dim)}
+.btn-ghost{background:transparent;color:var(--white);border:1px solid rgba(255,255,255,.2)}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Section */
+.section-label{display:block;font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);font-weight:700;line-height:1.15;color:var(--white)}
+.section-sub{font-size:.95rem;color:var(--muted);margin-top:.75rem;max-width:500px}
+.gold-line{width:50px;height:1px;background:linear-gradient(90deg,var(--gold),transparent);margin:1.2rem 0}
+
+/* Reveal */
+[data-reveal]{opacity:0;transform:translateY(30px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
+[data-reveal].visible{opacity:1;transform:translateY(0)}
+[data-reveal="left"]{transform:translateX(-30px)}
+[data-reveal="left"].visible{transform:translateX(0)}
+[data-reveal="right"]{transform:translateX(30px)}
+[data-reveal="right"].visible{transform:translateX(0)}
+
+/* Product Card */
+.product-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;transition:transform .35s var(--ease),box-shadow .35s,border-color .35s;cursor:pointer;position:relative}
+.product-card:hover{transform:translateY(-8px);box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 0 1px rgba(201,168,76,.3);border-color:rgba(201,168,76,.4)}
+.product-img-wrap{position:relative;aspect-ratio:4/3;overflow:hidden;background:linear-gradient(135deg,#1a1a26,#0d0d18)}
+.product-img-wrap img{width:100%;height:100%;object-fit:cover;transition:transform .5s var(--ease)}
+.product-card:hover .product-img-wrap img{transform:scale(1.06)}
+.product-badge{position:absolute;top:12px;left:12px;background:var(--gold);color:var(--bg);font-size:.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 10px;border-radius:3px}
+.badge-sale{background:var(--danger);color:#fff}
+.product-quick-add{position:absolute;bottom:12px;left:50%;transform:translateX(-50%) translateY(8px);opacity:0;white-space:nowrap;font-size:.7rem;font-weight:600;letter-spacing:2px;text-transform:uppercase;background:rgba(8,8,15,.9);color:var(--gold);border:1px solid var(--gold);padding:8px 18px;border-radius:4px;backdrop-filter:blur(8px);transition:opacity .3s,transform .3s var(--ease)}
+.product-card:hover .product-quick-add{opacity:1;transform:translateX(-50%) translateY(0)}
+.product-info{padding:1.2rem 1.4rem 1.4rem}
+.product-category{font-size:.65rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:.4rem}
+.product-name{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:600;color:var(--white);margin-bottom:.5rem}
+.product-price-row{display:flex;align-items:center;gap:.75rem}
+.product-price{font-size:1rem;font-weight:600;color:var(--gold)}
+.product-price-old{font-size:.85rem;color:var(--muted);text-decoration:line-through}
+.product-stars{display:flex;gap:2px;margin-top:.6rem}
+.star{font-size:.7rem;color:var(--gold)}
+.star.empty{color:#333}
+
+/* Cart Drawer */
+#cart-drawer{position:fixed;top:0;right:0;bottom:0;width:min(420px,100vw);background:var(--bg2);border-left:1px solid var(--border);z-index:1100;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .4s var(--ease)}
+#cart-drawer.open{transform:translateX(0)}
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:1099;opacity:0;pointer-events:none;transition:opacity .4s}
+.cart-overlay.visible{opacity:1;pointer-events:all}
+.cart-header{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 1.75rem;border-bottom:1px solid var(--border)}
+.cart-header h3{font-family:'Playfair Display',serif;font-size:1.1rem;letter-spacing:3px;text-transform:uppercase}
+.cart-close{width:36px;height:36px;border-radius:50%;background:var(--gold-dim);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:background .2s}
+.cart-close:hover{background:rgba(201,168,76,.25)}
+.cart-items{flex:1;overflow-y:auto;padding:1rem 1.75rem}
+.cart-items::-webkit-scrollbar{width:4px}
+.cart-items::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+.cart-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;gap:1rem;color:var(--muted);font-size:.9rem}
+.cart-empty-icon{font-size:3rem;opacity:.3}
+.cart-item{display:grid;grid-template-columns:80px 1fr auto;gap:1rem;align-items:center;padding:1rem 0;border-bottom:1px solid var(--border);animation:slideIn .3s var(--ease)}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px)}}
+.cart-item-img{width:80px;height:60px;border-radius:8px;object-fit:cover;background:var(--card)}
+.cart-item-name{font-size:.85rem;font-weight:500;margin-bottom:.2rem}
+.cart-item-price{font-size:.8rem;color:var(--gold)}
+.cart-item-qty{display:flex;align-items:center;gap:.5rem;margin-top:.5rem}
+.qty-btn{width:24px;height:24px;border-radius:4px;background:var(--gold-dim);color:var(--gold);font-size:1rem;display:flex;align-items:center;justify-content:center;transition:background .2s}
+.qty-btn:hover{background:rgba(201,168,76,.25)}
+.qty-num{font-size:.85rem;min-width:20px;text-align:center}
+.cart-item-remove{color:var(--muted);font-size:1rem;padding:4px;transition:color .2s}
+.cart-item-remove:hover{color:var(--danger)}
+.cart-footer{padding:1.5rem 1.75rem;border-top:1px solid var(--border)}
+.cart-total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
+.cart-total-label{font-size:.8rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.cart-total-price{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gold)}
+.cart-checkout-btn{width:100%;justify-content:center;padding:1rem;font-size:.82rem}
+.cart-note{text-align:center;font-size:.72rem;color:var(--muted);margin-top:.75rem;letter-spacing:1px}
+
+/* Toast */
+#toast-container{position:fixed;bottom:2rem;right:2rem;display:flex;flex-direction:column;gap:.75rem;z-index:2000}
+.toast{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--gold);color:var(--white);padding:.9rem 1.25rem;border-radius:var(--radius);font-size:.85rem;display:flex;align-items:center;gap:.75rem;box-shadow:0 8px 30px rgba(0,0,0,.5);animation:toastIn .4s var(--ease-spring);max-width:320px}
+.toast.removing{animation:toastOut .3s var(--ease) forwards}
+.toast-icon{color:var(--gold);font-size:1.1rem;flex-shrink:0}
+@keyframes toastIn{from{opacity:0;transform:translateY(20px) scale(.9)}}
+@keyframes toastOut{to{opacity:0;transform:translateX(30px)}}
+
+/* Popup */
+#discount-popup{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:1200;opacity:0;pointer-events:none;transition:opacity .4s}
+#discount-popup.show{opacity:1;pointer-events:all}
+.popup-bg{position:absolute;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(4px)}
+.popup-box{position:relative;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:3rem;max-width:480px;width:90%;text-align:center;transform:scale(.9);transition:transform .4s var(--ease-spring)}
+#discount-popup.show .popup-box{transform:scale(1)}
+.popup-close{position:absolute;top:1rem;right:1rem;color:var(--muted);font-size:1.2rem;width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:50%;transition:color .2s,background .2s}
+.popup-close:hover{color:var(--white);background:var(--gold-dim)}
+.popup-tag{display:inline-block;background:var(--gold-dim);border:1px solid var(--border);color:var(--gold);font-size:.7rem;letter-spacing:3px;text-transform:uppercase;padding:5px 14px;border-radius:20px;margin-bottom:1.25rem}
+.popup-headline{font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--gold);line-height:1;margin-bottom:.5rem}
+.popup-sub{font-size:.9rem;color:var(--muted);margin-bottom:1.75rem}
+.popup-form{display:flex;gap:.5rem;flex-wrap:wrap;justify-content:center}
+.popup-form input{flex:1;min-width:200px;background:var(--card);border:1px solid var(--border);color:var(--white);padding:.8rem 1.1rem;border-radius:4px;font-size:.85rem;outline:none;transition:border-color .2s}
+.popup-form input:focus{border-color:var(--gold)}
+.popup-skip{font-size:.75rem;color:var(--muted);margin-top:1rem;display:block;cursor:pointer}
+.popup-skip:hover{color:var(--white)}
+
+/* Back to top */
+#back-top{position:fixed;bottom:2.5rem;left:2rem;width:44px;height:44px;background:var(--gold-dim);border:1px solid var(--border);border-radius:50%;color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:1rem;z-index:900;opacity:0;pointer-events:none;transform:translateY(12px);transition:opacity .3s,transform .3s,background .2s}
+#back-top.visible{opacity:1;pointer-events:all;transform:translateY(0)}
+#back-top:hover{background:rgba(201,168,76,.22)}
+
+/* Footer */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:5rem 5% 2.5rem}
+.footer-grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1.2fr;gap:3rem;margin-bottom:3rem}
+.footer-brand p{font-size:.85rem;color:var(--muted);line-height:1.8;max-width:240px;margin-top:1rem}
+.footer-social{display:flex;gap:.75rem;margin-top:1.25rem}
+.social-link{width:36px;height:36px;border-radius:50%;background:var(--gold-dim);border:1px solid var(--border);color:var(--gold);display:flex;align-items:center;justify-content:center;font-size:.85rem;transition:background .2s,transform .2s}
+.social-link:hover{background:rgba(201,168,76,.22);transform:translateY(-3px)}
+.footer-col h4{font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem}
+.footer-col ul{display:flex;flex-direction:column;gap:.75rem}
+.footer-col ul a{font-size:.85rem;color:var(--muted);transition:color .2s;cursor:pointer}
+.footer-col ul a:hover{color:var(--white)}
+.footer-newsletter input{width:100%;background:var(--card);border:1px solid var(--border);color:var(--white);padding:.7rem 1rem;border-radius:4px;margin-bottom:.5rem;font-size:.85rem;outline:none;transition:border-color .2s}
+.footer-newsletter input:focus{border-color:var(--gold)}
+.footer-newsletter button{width:100%;justify-content:center;padding:.7rem;font-size:.72rem}
+.footer-newsletter .success-msg{color:var(--gold);font-size:.8rem;margin-top:.5rem;display:none}
+.footer-bottom{border-top:1px solid var(--border);padding-top:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-bottom p{font-size:.78rem;color:var(--muted)}
+.footer-bottom a{color:var(--gold)}
+
+/* ── HOME ── */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:calc(var(--nav-h) + 4rem) 5% 6rem}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 65% 50%,rgba(201,168,76,.07) 0%,transparent 60%),radial-gradient(ellipse 40% 80% at 20% 80%,rgba(201,168,76,.04) 0%,transparent 50%)}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;width:100%;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:.75rem;font-size:.7rem;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem}
+.hero-eyebrow::before{content:'';width:30px;height:1px;background:var(--gold)}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(3rem,6vw,5.5rem);font-weight:700;line-height:1.08;margin-bottom:1.5rem}
+.hero-title em{font-style:italic;color:var(--gold)}
+.hero-desc{font-size:1rem;color:var(--muted);max-width:440px;line-height:1.8;margin-bottom:2.5rem}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap}
+.hero-stats{display:flex;gap:2.5rem;margin-top:3.5rem;padding-top:2.5rem;border-top:1px solid var(--border)}
+.stat-num{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--gold);display:block}
+.stat-label{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.hero-visual{position:relative;display:flex;align-items:center;justify-content:center}
+.hero-img-wrap{width:100%;max-width:540px;aspect-ratio:4/5;border-radius:var(--radius-lg);overflow:hidden;position:relative;border:1px solid var(--border)}
+.hero-img-wrap img{width:100%;height:100%;object-fit:cover}
+.hero-img-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(8,8,15,.6) 0%,transparent 50%)}
+.hero-float-card{position:absolute;bottom:2rem;left:-2rem;background:rgba(16,16,26,.95);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.25rem;backdrop-filter:blur(16px);display:flex;align-items:center;gap:1rem;animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hero-float-img{width:52px;height:40px;border-radius:6px;object-fit:cover;background:var(--card)}
+.hfc-name{font-size:.8rem;font-weight:500;margin-bottom:.2rem}
+.hfc-price{font-size:.75rem;color:var(--gold)}
+.hero-float-card2{position:absolute;top:2.5rem;right:-1.5rem;background:rgba(16,16,26,.95);border:1px solid var(--border);border-radius:var(--radius);padding:.9rem 1.1rem;backdrop-filter:blur(16px);font-size:.78rem;text-align:center;animation:float 4s ease-in-out infinite 2s}
+.hfc2-num{font-family:'Playfair Display',serif;font-size:1.6rem;color:var(--gold);display:block}
+.hfc2-text{color:var(--muted);font-size:.68rem;letter-spacing:1.5px;text-transform:uppercase}
+.section{padding:7rem 5%}
+.section-header{margin-bottom:3.5rem}
+.section-header.centered{text-align:center}
+.section-header.centered .section-sub{margin:.75rem auto 0}
+.section-header.centered .gold-line{margin:1.2rem auto}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1.75rem}
+.marquee-section{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:1.2rem 0;overflow:hidden;background:var(--bg2)}
+.marquee-track{display:flex;gap:3rem;animation:marquee 20s linear infinite;width:max-content}
+.marquee-item{display:flex;align-items:center;gap:.75rem;white-space:nowrap;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+.marquee-dot{width:4px;height:4px;background:var(--gold);border-radius:50%;flex-shrink:0}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.values-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:2rem}
+.value-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;transition:border-color .3s,transform .3s}
+.value-card:hover{border-color:rgba(201,168,76,.4);transform:translateY(-4px)}
+.value-icon{font-size:1.8rem;margin-bottom:1rem}
+.value-title{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:.5rem}
+.value-text{font-size:.85rem;color:var(--muted);line-height:1.7}
+.testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.75rem}
+.testimonial-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem}
+.testi-stars{display:flex;gap:3px;margin-bottom:1rem}
+.testi-text{font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:1.25rem;font-style:italic}
+.testi-author{display:flex;align-items:center;gap:.75rem}
+.testi-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;background:var(--bg2);border:1px solid var(--border)}
+.testi-name{font-size:.85rem;font-weight:500}
+.testi-handle{font-size:.75rem;color:var(--gold)}
+
+/* ── SHOP ── */
+.shop-hero{padding:calc(var(--nav-h) + 4rem) 5% 3rem;text-align:center;position:relative}
+.shop-hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:60px;height:1px;background:var(--gold)}
+.shop-layout{display:grid;grid-template-columns:260px 1fr;gap:2.5rem;padding:3rem 5% 6rem;align-items:start}
+.shop-sidebar{position:sticky;top:calc(var(--nav-h) + 1.5rem);background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:1.75rem}
+.sidebar-section{margin-bottom:2rem}
+.sidebar-section:last-child{margin-bottom:0}
+.sidebar-title{font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.filter-group{display:flex;flex-direction:column;gap:.6rem}
+.filter-option{display:flex;align-items:center;gap:.7rem;font-size:.85rem;color:var(--muted);cursor:pointer;transition:color .2s}
+.filter-option:hover{color:var(--white)}
+.filter-option input{accent-color:var(--gold);width:14px;height:14px;cursor:pointer}
+.price-range{width:100%;accent-color:var(--gold);cursor:pointer}
+.price-labels{display:flex;justify-content:space-between;font-size:.75rem;color:var(--muted);margin-top:.4rem}
+.sidebar-reset{width:100%;justify-content:center;margin-top:.5rem;padding:.6rem;font-size:.72rem}
+.shop-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.75rem;flex-wrap:wrap;gap:1rem}
+.results-count{font-size:.85rem;color:var(--muted)}
+.results-count span{color:var(--white)}
+.sort-select{background:var(--card);border:1px solid var(--border);color:var(--white);padding:.5rem 1rem;border-radius:4px;font-size:.8rem;outline:none;cursor:pointer}
+.sort-select:focus{border-color:var(--gold)}
+
+/* ── PRODUCT PAGE ── */
+.product-page{padding:calc(var(--nav-h) + 3rem) 5% 6rem}
+.product-page-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;margin-bottom:5rem}
+.main-img{width:100%;aspect-ratio:4/3;border-radius:var(--radius-lg);overflow:hidden;background:var(--card);border:1px solid var(--border);margin-bottom:1rem;cursor:zoom-in}
+.main-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.main-img:hover img{transform:scale(1.04)}
+.thumb-row{display:flex;gap:.75rem}
+.thumb{width:80px;height:60px;border-radius:8px;overflow:hidden;border:1px solid var(--border);cursor:pointer;transition:border-color .2s}
+.thumb.active{border-color:var(--gold)}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.breadcrumb{display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:var(--muted);margin-bottom:1.5rem}
+.breadcrumb a{cursor:pointer}
+.breadcrumb a:hover{color:var(--gold)}
+.breadcrumb-sep{color:var(--border)}
+.detail-category{font-size:.7rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:.6rem}
+.detail-name{font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;line-height:1.2;margin-bottom:.75rem}
+.detail-rating{display:flex;align-items:center;gap:.75rem;margin-bottom:1.25rem}
+.detail-stars{display:flex;gap:2px}
+.detail-review-count{font-size:.8rem;color:var(--muted)}
+.detail-price-row{display:flex;align-items:center;gap:1rem;margin-bottom:2rem}
+.detail-price{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold)}
+.detail-price-old{font-size:1.1rem;color:var(--muted);text-decoration:line-through}
+.detail-badge{background:rgba(224,82,82,.15);color:var(--danger);font-size:.72rem;font-weight:600;letter-spacing:1px;padding:4px 10px;border-radius:3px}
+.detail-desc{font-size:.9rem;color:var(--muted);line-height:1.8;margin-bottom:2rem}
+.option-group{margin-bottom:1.5rem}
+.option-label{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem}
+.option-label span{color:var(--white);font-weight:500}
+.color-options{display:flex;gap:.6rem}
+.color-swatch{width:28px;height:28px;border-radius:50%;cursor:pointer;transition:transform .2s;position:relative}
+.color-swatch:hover{transform:scale(1.15)}
+.color-swatch.active::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:2px solid var(--gold)}
+.size-options{display:flex;gap:.6rem;flex-wrap:wrap}
+.size-btn{padding:.45rem 1.1rem;border:1px solid var(--border);border-radius:4px;font-size:.8rem;color:var(--muted);transition:border-color .2s,color .2s,background .2s}
+.size-btn:hover{border-color:var(--gold);color:var(--gold)}
+.size-btn.active{border-color:var(--gold);color:var(--bg);background:var(--gold)}
+.qty-selector{display:flex;align-items:center;border:1px solid var(--border);border-radius:4px;overflow:hidden;width:fit-content}
+.qty-selector button{width:36px;height:36px;background:var(--card);color:var(--white);font-size:1.1rem;transition:background .2s}
+.qty-selector button:hover{background:var(--gold-dim)}
+.qty-selector input{width:50px;height:36px;background:transparent;border:none;border-left:1px solid var(--border);border-right:1px solid var(--border);color:var(--white);text-align:center;font-size:.9rem;outline:none}
+.detail-actions{display:flex;gap:1rem;margin-top:1.75rem;flex-wrap:wrap}
+.add-cart-btn{flex:1;min-width:200px;justify-content:center;padding:1rem}
+.wishlist-btn{width:50px;height:50px;border-radius:4px;background:transparent;border:1px solid var(--border);color:var(--muted);display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:color .2s,border-color .2s,background .2s}
+.wishlist-btn:hover{color:var(--gold);border-color:var(--gold);background:var(--gold-dim)}
+.detail-meta{margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border);display:flex;flex-direction:column;gap:.6rem}
+.meta-row{display:flex;gap:.5rem;font-size:.82rem}
+.meta-row span:first-child{color:var(--muted);min-width:90px}
+.reviews-section{margin-top:4rem;padding-top:4rem;border-top:1px solid var(--border)}
+.reviews-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:2.5rem;flex-wrap:wrap;gap:1.5rem}
+.reviews-summary{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:center;margin-bottom:2.5rem}
+.big-rating{text-align:center}
+.big-score{font-family:'Playfair Display',serif;font-size:4rem;color:var(--gold);line-height:1}
+.big-stars{display:flex;justify-content:center;gap:3px;margin:.4rem 0}
+.big-count{font-size:.78rem;color:var(--muted)}
+.rating-bars{display:flex;flex-direction:column;gap:.5rem}
+.rating-bar-row{display:flex;align-items:center;gap:.75rem;font-size:.78rem}
+.bar-label{color:var(--muted);min-width:30px}
+.bar-track{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.bar-fill{height:100%;background:var(--gold);border-radius:3px}
+.bar-count{color:var(--muted);min-width:25px;text-align:right}
+.review-list{display:flex;flex-direction:column;gap:1.5rem}
+.review-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem}
+.review-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem;flex-wrap:wrap;gap:.5rem}
+.reviewer{display:flex;align-items:center;gap:.75rem}
+.reviewer-avatar{width:38px;height:38px;border-radius:50%;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.85rem;color:var(--gold);font-weight:600}
+.reviewer-name{font-size:.88rem;font-weight:500}
+.reviewer-date{font-size:.75rem;color:var(--muted)}
+.review-stars{display:flex;gap:2px}
+.review-text{font-size:.88rem;color:var(--muted);line-height:1.7}
+.verified-badge{display:inline-flex;align-items:center;gap:4px;font-size:.7rem;color:var(--gold);margin-top:.6rem}
+.write-review{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2rem;margin-top:2rem}
+.write-review h4{font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:1.5rem}
+.star-picker{display:flex;gap:.3rem;margin-bottom:1.25rem;cursor:pointer}
+.star-pick{font-size:1.5rem;color:#333;transition:color .1s}
+.star-pick.lit{color:var(--gold)}
+.review-form{display:flex;flex-direction:column;gap:1rem}
+.review-form input,.review-form textarea{background:var(--bg2);border:1px solid var(--border);color:var(--white);padding:.75rem 1rem;border-radius:4px;font-size:.88rem;outline:none;transition:border-color .2s}
+.review-form input:focus,.review-form textarea:focus{border-color:var(--gold)}
+.review-form textarea{resize:vertical;min-height:100px}
+
+/* ── ABOUT ── */
+.about-hero{min-height:60vh;display:flex;align-items:center;padding:calc(var(--nav-h) + 4rem) 5% 5rem;position:relative;overflow:hidden}
+.about-hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 80% at 80% 50%,rgba(201,168,76,.06) 0%,transparent 60%)}
+.about-story{padding:6rem 5%;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.about-img{aspect-ratio:3/4;border-radius:var(--radius-lg);overflow:hidden;border:1px solid var(--border);position:relative}
+.about-img img{width:100%;height:100%;object-fit:cover}
+.about-img-badge{position:absolute;bottom:2rem;right:-2rem;background:var(--gold);color:var(--bg);padding:1.25rem 1.5rem;border-radius:var(--radius);font-family:'Playfair Display',serif;text-align:center}
+.about-img-badge .big{font-size:2.5rem;font-weight:700;display:block}
+.about-img-badge .sm{font-size:.72rem;letter-spacing:2px;text-transform:uppercase}
+.about-text p{font-size:.9rem;color:var(--muted);line-height:1.9;margin-bottom:1.25rem}
+.team-section{padding:6rem 5%;background:var(--bg2)}
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:2rem;margin-top:3rem}
+.team-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;text-align:center;transition:transform .3s,border-color .3s}
+.team-card:hover{transform:translateY(-6px);border-color:rgba(201,168,76,.4)}
+.team-img{aspect-ratio:1;overflow:hidden}
+.team-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.team-card:hover .team-img img{transform:scale(1.06)}
+.team-info{padding:1.25rem}
+.team-name{font-family:'Playfair Display',serif;font-size:1.05rem;margin-bottom:.3rem}
+.team-role{font-size:.75rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold)}
+
+/* ── CONTACT ── */
+.contact-page{padding:calc(var(--nav-h) + 4rem) 5% 6rem}
+.contact-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:4rem;align-items:start}
+.contact-items{display:flex;flex-direction:column;gap:1.5rem}
+.contact-item{display:flex;align-items:flex-start;gap:1rem}
+.contact-icon{width:42px;height:42px;flex-shrink:0;background:var(--gold-dim);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--gold);font-size:1rem}
+.contact-item-title{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:.3rem}
+.contact-item-text{font-size:.88rem;color:var(--muted)}
+.contact-form-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:2.5rem}
+.contact-form-wrap h3{font-family:'Playfair Display',serif;font-size:1.3rem;margin-bottom:2rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-group{display:flex;flex-direction:column;gap:.5rem}
+.form-group.full{grid-column:1/-1}
+.form-label{font-size:.72rem;letter-spacing:2px;text-transform:uppercase;color:var(--muted)}
+.form-input{background:var(--bg2);border:1px solid var(--border);color:var(--white);padding:.8rem 1rem;border-radius:4px;font-size:.88rem;outline:none;transition:border-color .2s}
+.form-input:focus{border-color:var(--gold)}
+textarea.form-input{resize:vertical;min-height:120px}
+.form-success{display:none;text-align:center;padding:2rem;color:var(--gold)}
+.form-success .check{font-size:2.5rem;margin-bottom:1rem;display:block}
+
+/* Responsive */
+@media(max-width:1024px){
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .shop-layout{grid-template-columns:1fr}
+  .shop-sidebar{position:static}
+  .product-page-grid{grid-template-columns:1fr;gap:3rem}
+  .about-story{grid-template-columns:1fr}
+  .about-img-badge{right:2rem}
+  .contact-grid{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero-grid{grid-template-columns:1fr}
+  .hero-visual{display:none}
+  .hero{padding-top:calc(var(--nav-h) + 2rem)}
+  .footer-grid{grid-template-columns:1fr}
+  .form-grid{grid-template-columns:1fr}
+  .reviews-summary{grid-template-columns:1fr}
+  #toast-container{left:1rem;right:1rem;bottom:1.5rem}
+  .section{padding:5rem 5%}
+}
+@media(max-width:480px){
+  .hero-title{font-size:2.5rem}
+  .popup-box{padding:2rem}
+  .popup-headline{font-size:2rem}
+}
+</style>
+</head>
+<body>
+
+<!-- Loader -->
+<div id="page-loader">
+  <div class="loader-ring"></div>
+  <span class="loader-logo">SOLARA</span>
+</div>
+
+<!-- Navbar -->
+<nav id="navbar">
+  <span class="nav-logo" onclick="showPage('home')">SOLARA</span>
+  <ul class="nav-links">
+    <li><a onclick="showPage('home')" data-page="home">Home</a></li>
+    <li><a onclick="showPage('shop')" data-page="shop">Shop</a></li>
+    <li><a onclick="showPage('about')" data-page="about">About</a></li>
+    <li><a onclick="showPage('contact')" data-page="contact">Contact</a></li>
+  </ul>
+  <div class="nav-actions">
+    <button class="cart-btn" aria-label="Cart">🛒<span class="cart-count"></span></button>
+    <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+<nav class="mobile-menu">
+  <a onclick="showPage('home')">Home</a>
+  <a onclick="showPage('shop')">Shop</a>
+  <a onclick="showPage('about')">About</a>
+  <a onclick="showPage('contact')">Contact</a>
+</nav>
+
+<!-- Cart -->
+<div class="cart-overlay"></div>
+<aside id="cart-drawer">
+  <div class="cart-header">
+    <h3>Your Cart</h3>
+    <button class="cart-close">✕</button>
+  </div>
+  <div class="cart-items"></div>
+  <div class="cart-footer">
+    <div class="cart-total-row">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-price">$0</span>
+    </div>
+    <button class="btn btn-primary cart-checkout-btn" onclick="showToast('Checkout coming soon!','🔒')">Checkout</button>
+    <p class="cart-note">Free shipping on orders over $300</p>
+  </div>
+</aside>
+
+<!-- Popup -->
+<div id="discount-popup">
+  <div class="popup-bg"></div>
+  <div class="popup-box">
+    <button class="popup-close">✕</button>
+    <span class="popup-tag">Welcome Offer</span>
+    <div class="popup-headline">10% Off</div>
+    <p class="popup-sub">Your first order. Enter your email to unlock the code.</p>
+    <form class="popup-form">
+      <input type="email" placeholder="your@email.com" required>
+      <button type="submit" class="btn btn-primary">Claim Offer</button>
+    </form>
+    <span class="popup-skip">No thanks, I'll pay full price</span>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     HOME PAGE
+══════════════════════════════════════ -->
+<div id="page-home" class="page active">
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid">
+      <div class="hero-content">
+        <div class="hero-eyebrow">New 2024 Collection</div>
+        <h1 class="hero-title">See the World<br>in a <em>Different</em><br>Light</h1>
+        <p class="hero-desc">Handcrafted luxury sunglasses engineered for those who refuse to compromise on style or performance. UV400. Polarized. Iconic.</p>
+        <div class="hero-actions">
+          <button class="btn btn-primary" onclick="showPage('shop')">Shop Collection</button>
+          <button class="btn btn-ghost" onclick="showPage('about')">Our Story</button>
+        </div>
+        <div class="hero-stats">
+          <div><span class="stat-num">12+</span><span class="stat-label">Exclusive Styles</span></div>
+          <div><span class="stat-num">4.8★</span><span class="stat-label">Average Rating</span></div>
+          <div><span class="stat-num">1K+</span><span class="stat-label">Happy Customers</span></div>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-img-wrap">
+          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=700&q=80" alt="SOLARA">
+          <div class="hero-img-overlay"></div>
+        </div>
+        <div class="hero-float-card">
+          <img class="hero-float-img" src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=100&q=80" alt="">
+          <div><div class="hfc-name">Onyx Eclipse</div><div class="hfc-price">$289</div></div>
+        </div>
+        <div class="hero-float-card2">
+          <span class="hfc2-num">4.8</span>
+          <span class="hfc2-text">Avg Rating</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee-section">
+    <div class="marquee-track">
+      <span class="marquee-item"><span class="marquee-dot"></span>UV400 Protection</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Polarized Lenses</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Titanium Frames</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Lifetime Warranty</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Free Shipping over $300</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>30-Day Returns</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Handcrafted in Italy</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>UV400 Protection</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Polarized Lenses</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Titanium Frames</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Lifetime Warranty</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Free Shipping over $300</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>30-Day Returns</span>
+      <span class="marquee-item"><span class="marquee-dot"></span>Handcrafted in Italy</span>
+    </div>
+  </div>
+
+  <section class="section">
+    <div class="section-header" data-reveal>
+      <span class="section-label">Editor's Pick</span>
+      <h2 class="section-title">Featured Styles</h2>
+      <div class="gold-line"></div>
+      <p class="section-sub">Curated by our design team — the styles defining the season.</p>
+    </div>
+    <div class="products-grid" id="featured-grid"></div>
+    <div style="text-align:center;margin-top:3rem" data-reveal>
+      <button class="btn btn-outline" onclick="showPage('shop')">View Full Collection</button>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--bg2)">
+    <div class="section-header centered" data-reveal>
+      <span class="section-label">Why SOLARA</span>
+      <h2 class="section-title">Crafted Without Compromise</h2>
+      <div class="gold-line"></div>
+    </div>
+    <div class="values-grid">
+      <div class="value-card" data-reveal><div class="value-icon">🛡️</div><h3 class="value-title">UV400 Protection</h3><p class="value-text">Every lens blocks 100% of UVA and UVB radiation, keeping your eyes safe without sacrificing clarity.</p></div>
+      <div class="value-card" data-reveal><div class="value-icon">✦</div><h3 class="value-title">Italian Craftsmanship</h3><p class="value-text">Handcrafted in the Veneto region by master artisans with decades of heritage in luxury eyewear.</p></div>
+      <div class="value-card" data-reveal><div class="value-icon">♻️</div><h3 class="value-title">Sustainable Materials</h3><p class="value-text">Bio-acetate frames, recycled titanium, and plant-based packaging — luxury without the footprint.</p></div>
+      <div class="value-card" data-reveal><div class="value-icon">∞</div><h3 class="value-title">Lifetime Warranty</h3><p class="value-text">Every pair comes with a lifetime craftsmanship warranty. If it breaks, we fix or replace it.</p></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-header" data-reveal>
+      <span class="section-label">Most Loved</span>
+      <h2 class="section-title">Best Sellers</h2>
+      <div class="gold-line"></div>
+      <p class="section-sub">The styles our customers can't stop wearing — or talking about.</p>
+    </div>
+    <div class="products-grid" id="best-grid"></div>
+  </section>
+
+  <section class="section" style="background:var(--bg2)">
+    <div class="section-header centered" data-reveal>
+      <span class="section-label">Reviews</span>
+      <h2 class="section-title">What People Are Saying</h2>
+      <div class="gold-line"></div>
+    </div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card" data-reveal>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"I've tried every luxury eyewear brand. SOLARA is the only one where I feel the quality the moment I open the box. The Onyx Eclipse is perfection."</p>
+        <div class="testi-author">
+          <img class="testi-avatar" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&q=80" alt="Sofia">
+          <div><div class="testi-name">Sofia R.</div><div class="testi-handle">@sofiastyle</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card" data-reveal>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Wore the Apex Aviators on a sailing trip. Zero distortion, zero glare, and they looked incredible in every photo. Worth every penny."</p>
+        <div class="testi-author">
+          <img class="testi-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&q=80" alt="Marco">
+          <div><div class="testi-name">Marco D.</div><div class="testi-handle">@marcoexplores</div></div>
+        </div>
+      </div>
+      <div class="testimonial-card" data-reveal>
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"The Aurora Noir is the most beautiful pair of sunglasses I've ever owned. The gradient lens in real sunlight is breathtaking. SOLARA has a customer for life."</p>
+        <div class="testi-author">
+          <img class="testi-avatar" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=80&q=80" alt="Isabelle">
+          <div><div class="testi-name">Isabelle C.</div><div class="testi-handle">@isabellecc</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="text-align:center;padding:8rem 5%">
+    <div data-reveal>
+      <span class="section-label">Limited Edition</span>
+      <h2 class="section-title" style="max-width:600px;margin:0 auto">Your Next Favourite Pair Is Waiting</h2>
+      <div class="gold-line" style="margin:1.5rem auto"></div>
+      <p class="section-sub" style="margin:0 auto 2.5rem">Free shipping on orders over $300. 30-day hassle-free returns.</p>
+      <button class="btn btn-primary" style="padding:1.1rem 3rem;font-size:.85rem" onclick="showPage('shop')">Shop Now</button>
+    </div>
+  </section>
+
+  <div id="home-footer"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SHOP PAGE
+══════════════════════════════════════ -->
+<div id="page-shop" class="page">
+  <div class="shop-hero">
+    <span class="section-label">Full Collection</span>
+    <h1 class="section-title" style="max-width:none">The SOLARA Edit</h1>
+    <div class="gold-line" style="margin:1.25rem auto"></div>
+    <p class="section-sub" style="margin:0 auto">12 styles. One standard: exceptional.</p>
+  </div>
+  <div class="shop-layout">
+    <aside class="shop-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-title">Category</div>
+        <div class="filter-group">
+          <label class="filter-option"><input type="radio" name="category" value="all" checked> All Styles</label>
+          <label class="filter-option"><input type="radio" name="category" value="men"> Men</label>
+          <label class="filter-option"><input type="radio" name="category" value="women"> Women</label>
+          <label class="filter-option"><input type="radio" name="category" value="unisex"> Unisex</label>
+        </div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Price Range</div>
+        <input type="range" class="price-range" id="price-range" min="100" max="500" value="500" step="25">
+        <div class="price-labels"><span>$100</span><span id="price-label">Up to $500</span></div>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-title">Sort By</div>
+        <select class="sort-select" id="sort-select" style="width:100%;margin-top:.25rem">
+          <option value="featured">Featured</option>
+          <option value="price-asc">Price: Low to High</option>
+          <option value="price-desc">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+          <option value="newest">Newest</option>
+        </select>
+      </div>
+      <button class="btn btn-ghost sidebar-reset">Reset Filters</button>
+    </aside>
+    <main class="shop-main">
+      <div class="shop-toolbar">
+        <p class="results-count" id="results-count"><span>12</span> styles found</p>
+      </div>
+      <div class="products-grid" id="shop-grid"></div>
+    </main>
+  </div>
+  <div id="shop-footer"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     PRODUCT PAGE
+══════════════════════════════════════ -->
+<div id="page-product" class="page">
+  <main class="product-page">
+    <div class="breadcrumb">
+      <a onclick="showPage('home')">Home</a>
+      <span class="breadcrumb-sep">›</span>
+      <a onclick="showPage('shop')">Shop</a>
+      <span class="breadcrumb-sep">›</span>
+      <span id="breadcrumb-name">Product</span>
+    </div>
+    <div class="product-page-grid">
+      <div class="product-gallery">
+        <div class="main-img"><img src="" alt="Product" id="main-product-img"></div>
+        <div class="thumb-row" id="thumb-row"></div>
+      </div>
+      <div class="product-detail">
+        <div class="detail-category" id="d-category"></div>
+        <h1 class="detail-name" id="d-name"></h1>
+        <div class="detail-rating">
+          <div class="detail-stars" id="d-stars"></div>
+          <span class="detail-review-count" id="d-reviews"></span>
+        </div>
+        <div class="detail-price-row">
+          <span class="detail-price" id="d-price"></span>
+          <span class="detail-price-old" id="d-old-price"></span>
+          <span class="detail-badge" id="d-badge"></span>
+        </div>
+        <p class="detail-desc" id="d-desc"></p>
+        <div class="option-group">
+          <div class="option-label">Color: <span id="selected-color">Black</span></div>
+          <div class="color-options" id="d-colors"></div>
+        </div>
+        <div class="option-group">
+          <div class="option-label">Frame Size: <span id="selected-size">M</span></div>
+          <div class="size-options" id="d-sizes"></div>
+          <p style="font-size:.75rem;color:var(--muted);margin-top:.6rem">S = 50–52mm · M = 53–55mm · L = 56–58mm</p>
+        </div>
+        <div class="option-group">
+          <div class="option-label">Quantity</div>
+          <div class="qty-selector">
+            <button class="qty-dec">−</button>
+            <input type="number" class="qty-input" value="1" min="1" max="10" readonly>
+            <button class="qty-inc">+</button>
+          </div>
+        </div>
+        <div class="detail-actions">
+          <button class="btn btn-primary add-cart-btn">Add to Cart</button>
+          <button class="wishlist-btn" title="Wishlist">♡</button>
+        </div>
+        <div class="detail-meta">
+          <div class="meta-row"><span>SKU</span><span class="meta-sku">—</span></div>
+          <div class="meta-row"><span>Material</span><span>Premium Acetate / Titanium</span></div>
+          <div class="meta-row"><span>Lens</span><span>UV400 Polarized</span></div>
+          <div class="meta-row"><span>Origin</span><span>Handcrafted in Italy</span></div>
+          <div class="meta-row"><span>Warranty</span><span>Lifetime Craftsmanship</span></div>
+        </div>
+        <div style="display:flex;gap:1.5rem;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--muted)">🚚 <span>Free shipping over $300</span></div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--muted)">↩️ <span>30-day returns</span></div>
+          <div style="display:flex;align-items:center;gap:.5rem;font-size:.78rem;color:var(--muted)">🔒 <span>Secure checkout</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reviews-section">
+      <div class="reviews-header">
+        <div><span class="section-label">Customer Reviews</span><h2 class="section-title" style="font-size:1.8rem">What Customers Say</h2></div>
+        <a class="btn btn-outline" href="#write-review">Write a Review</a>
+      </div>
+      <div class="reviews-summary" id="reviews-summary"></div>
+      <div class="review-list" id="review-list"></div>
+      <div class="write-review" id="write-review">
+        <h4>Share Your Experience</h4>
+        <div class="star-picker">
+          <span class="star-pick">★</span><span class="star-pick">★</span><span class="star-pick">★</span><span class="star-pick">★</span><span class="star-pick">★</span>
+        </div>
+        <form class="review-form" id="review-form">
+          <input type="text" name="name" placeholder="Your name" required>
+          <textarea name="review" placeholder="Tell us about your experience..." required></textarea>
+          <button type="submit" class="btn btn-primary">Submit Review</button>
+        </form>
+      </div>
+    </div>
+
+    <section style="margin-top:5rem;padding-top:4rem;border-top:1px solid var(--border)">
+      <div class="section-header" style="margin-bottom:2.5rem">
+        <span class="section-label">You May Also Like</span>
+        <h2 class="section-title" style="font-size:1.8rem">Related Styles</h2>
+      </div>
+      <div class="products-grid" id="related-grid"></div>
+    </section>
+  </main>
+  <div id="product-footer"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     ABOUT PAGE
+══════════════════════════════════════ -->
+<div id="page-about" class="page">
+  <section class="about-hero">
+    <div class="about-hero-bg"></div>
+    <div style="position:relative;max-width:700px">
+      <span class="section-label" data-reveal>Our Story</span>
+      <h1 class="section-title" data-reveal style="font-size:clamp(2.5rem,5vw,4.5rem)">Born from a Belief That<br><em style="font-style:italic;color:var(--gold)">Light Deserves Respect</em></h1>
+      <div class="gold-line" data-reveal></div>
+      <p class="section-sub" data-reveal style="max-width:580px">SOLARA began with a simple conviction: luxury shouldn't be a compromise. Every frame we create is proof of that conviction.</p>
+    </div>
+  </section>
+
+  <section class="about-story">
+    <div class="about-img" data-reveal="left">
+      <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80" alt="SOLARA Atelier">
+      <div class="about-img-badge"><span class="big">2018</span><span class="sm">Est. Milan</span></div>
+    </div>
+    <div class="about-text" data-reveal="right">
+      <span class="section-label">The Origin</span>
+      <h2 class="section-title">From Milan, to the World</h2>
+      <div class="gold-line"></div>
+      <p class="section-sub" style="max-width:100%;margin-bottom:1.5rem">Where the craft of luxury eyewear was reinvented for a new generation.</p>
+      <p>In 2018, three friends — a materials scientist, a fashion editor, and a master optician — sat in a café in Milan arguing about why truly exceptional sunglasses didn't exist at a price that didn't feel like extortion.</p>
+      <p>They spent two years visiting artisan workshops across the Veneto region, sourcing the finest bio-acetate sheets, commissioning custom titanium alloys, and working with optical labs to develop proprietary polarized lens technology.</p>
+      <p>SOLARA launched with six styles. They sold out in eleven days.</p>
+      <p>Six years later, we're still driven by the same argument in that café: that design, materials, and optics don't have to be at war with each other — or with your conscience.</p>
+      <div style="margin-top:2rem">
+        <button class="btn btn-primary" onclick="showPage('shop')">Shop the Collection</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--bg2)">
+    <div class="section-header centered" data-reveal>
+      <span class="section-label">Our Mission</span>
+      <h2 class="section-title">Principles We Won't Compromise</h2>
+      <div class="gold-line"></div>
+    </div>
+    <div class="values-grid">
+      <div class="value-card" data-reveal><div class="value-icon">🌿</div><h3 class="value-title">Sustainability First</h3><p class="value-text">Our frames are made from bio-acetate derived from cotton and wood pulp. Packaging is 100% recycled and plastic-free.</p></div>
+      <div class="value-card" data-reveal><div class="value-icon">🤝</div><h3 class="value-title">Fair Artisanship</h3><p class="value-text">Every craftsperson in our Italian workshops is paid above-industry wages with full benefits.</p></div>
+      <div class="value-card" data-reveal><div class="value-icon">🔬</div><h3 class="value-title">Optical Excellence</h3><p class="value-text">Our lenses undergo 14 quality checks before reaching you. UV400, polarization, anti-reflective coating — non-negotiable.</p></div>
+      <div class="value-card" data-reveal><div class="value-icon">♾️</div><h3 class="value-title">Built to Last</h3><p class="value-text">We offer lifetime repair on every pair we've ever sold. If it breaks from a defect, we fix it. No questions, no asterisks.</p></div>
+    </div>
+  </section>
+
+  <section class="team-section">
+    <div class="section-header" data-reveal>
+      <span class="section-label">The People</span>
+      <h2 class="section-title">Meet the Founders</h2>
+      <div class="gold-line"></div>
+    </div>
+    <div class="team-grid">
+      <div class="team-card" data-reveal><div class="team-img"><img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&q=80" alt="Marco"></div><div class="team-info"><div class="team-name">Marco Ferretti</div><div class="team-role">Co-founder & CEO</div></div></div>
+      <div class="team-card" data-reveal><div class="team-img"><img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" alt="Elena"></div><div class="team-info"><div class="team-name">Elena Vasquez</div><div class="team-role">Co-founder & Creative Director</div></div></div>
+      <div class="team-card" data-reveal><div class="team-img"><img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&q=80" alt="Kenji"></div><div class="team-info"><div class="team-name">Dr. Kenji Mori</div><div class="team-role">Co-founder & Head of Optics</div></div></div>
+      <div class="team-card" data-reveal><div class="team-img"><img src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&q=80" alt="Sofia"></div><div class="team-info"><div class="team-name">Sofia Marchetti</div><div class="team-role">Head of Design</div></div></div>
+    </div>
+  </section>
+
+  <section class="section" style="background:var(--card);border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2rem;text-align:center">
+      <div data-reveal><div style="font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold)">6</div><div style="font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)">Years of Craft</div></div>
+      <div data-reveal><div style="font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold)">12</div><div style="font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)">Iconic Styles</div></div>
+      <div data-reveal><div style="font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold)">40+</div><div style="font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)">Countries Reached</div></div>
+      <div data-reveal><div style="font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold)">4.8★</div><div style="font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--muted)">Average Rating</div></div>
+    </div>
+  </section>
+
+  <section class="section" style="text-align:center">
+    <div data-reveal>
+      <span class="section-label">The Collection</span>
+      <h2 class="section-title">Ready to See Differently?</h2>
+      <div class="gold-line" style="margin:1.5rem auto"></div>
+      <button class="btn btn-primary" style="padding:1.1rem 3rem" onclick="showPage('shop')">Explore All Styles</button>
+    </div>
+  </section>
+  <div id="about-footer"></div>
+</div>
+
+<!-- ══════════════════════════════════════
+     CONTACT PAGE
+══════════════════════════════════════ -->
+<div id="page-contact" class="page">
+  <div style="padding:calc(var(--nav-h) + 3rem) 5% 2rem;text-align:center">
+    <span class="section-label" data-reveal>Get In Touch</span>
+    <h1 class="section-title" data-reveal>We'd Love to Hear From You</h1>
+    <div class="gold-line" style="margin:1.25rem auto" data-reveal></div>
+    <p class="section-sub" style="margin:0 auto" data-reveal>Questions about your order, a partnership, or just want to talk eyewear? We're here.</p>
+  </div>
+
+  <main class="contact-page">
+    <div class="contact-grid">
+      <div data-reveal="left">
+        <span class="section-label">Contact Details</span>
+        <h2 class="section-title" style="font-size:1.6rem;margin-bottom:.5rem">Reach Us Directly</h2>
+        <div class="gold-line"></div>
+        <p class="section-sub" style="max-width:100%;margin-bottom:2rem">We respond to every message within 24 hours.</p>
+        <div class="contact-items">
+          <div class="contact-item"><div class="contact-icon">📧</div><div><div class="contact-item-title">Email</div><div class="contact-item-text">hello@solaraeyewear.com</div></div></div>
+          <div class="contact-item"><div class="contact-icon">📞</div><div><div class="contact-item-title">Phone</div><div class="contact-item-text">+1 (800) SOL-ARA1</div></div></div>
+          <div class="contact-item"><div class="contact-icon">📍</div><div><div class="contact-item-title">Studio</div><div class="contact-item-text">Via della Moda 42<br>Milan, 20121 — Italy</div></div></div>
+          <div class="contact-item"><div class="contact-icon">💬</div><div><div class="contact-item-title">Live Chat</div><div class="contact-item-text">Mon–Sat, 10am–8pm CET</div></div></div>
+        </div>
+        <div style="margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border)">
+          <div class="sidebar-title" style="margin-bottom:1rem">Follow SOLARA</div>
+          <div style="display:flex;gap:.75rem">
+            <a href="#" class="social-link">📷</a>
+            <a href="#" class="social-link">𝕏</a>
+            <a href="#" class="social-link">📌</a>
+            <a href="#" class="social-link">🎵</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="contact-form-wrap" data-reveal="right">
+        <h3>Send a Message</h3>
+        <form class="contact-form" id="contact-form">
+          <div class="form-grid">
+            <div class="form-group"><label class="form-label">First Name</label><input type="text" class="form-input" placeholder="Alexandra" required></div>
+            <div class="form-group"><label class="form-label">Last Name</label><input type="text" class="form-input" placeholder="Chen" required></div>
+            <div class="form-group"><label class="form-label">Email Address</label><input type="email" class="form-input" placeholder="you@email.com" required></div>
+            <div class="form-group"><label class="form-label">Phone (Optional)</label><input type="tel" class="form-input" placeholder="+1 (000) 000-0000"></div>
+            <div class="form-group full"><label class="form-label">Subject</label>
+              <select class="form-input">
+                <option>Order Inquiry</option><option>Product Question</option><option>Returns & Warranty</option><option>Wholesale / Partnership</option><option>Press & Media</option><option>Other</option>
+              </select>
+            </div>
+            <div class="form-group full"><label class="form-label">Your Message</label><textarea class="form-input" placeholder="Tell us how we can help..." required></textarea></div>
+          </div>
+          <button type="submit" class="btn btn-primary form-submit">Send Message</button>
+        </form>
+        <div class="form-success" id="form-success">
+          <span class="check">✓</span>
+          <h3 style="font-family:'Playfair Display',serif;margin-bottom:.5rem">Message Received!</h3>
+          <p style="color:var(--muted);font-size:.88rem">We'll get back to you within 24 hours.</p>
+          <button class="btn btn-outline" style="margin-top:1.5rem" onclick="showPage('shop')">Browse Collection</button>
+        </div>
+      </div>
+    </div>
+
+    <section style="margin-top:5rem;padding-top:5rem;border-top:1px solid var(--border)">
+      <div class="section-header centered" data-reveal style="margin-bottom:2.5rem">
+        <span class="section-label">Quick Answers</span>
+        <h2 class="section-title" style="font-size:1.8rem">FAQ</h2>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;max-width:900px;margin:0 auto">
+        <div class="value-card" data-reveal><h3 class="value-title" style="font-size:.95rem;margin-bottom:.5rem">How long does shipping take?</h3><p class="value-text">Standard 3–5 business days. Express 1–2 days. Free standard shipping on orders over $300 worldwide.</p></div>
+        <div class="value-card" data-reveal><h3 class="value-title" style="font-size:.95rem;margin-bottom:.5rem">What's your return policy?</h3><p class="value-text">30-day hassle-free returns on unworn pairs in original packaging.</p></div>
+        <div class="value-card" data-reveal><h3 class="value-title" style="font-size:.95rem;margin-bottom:.5rem">Does the warranty cover scratches?</h3><p class="value-text">Lifetime warranty covers manufacturing defects. Lens scratches from normal wear not covered, but replacement lenses available at cost.</p></div>
+        <div class="value-card" data-reveal><h3 class="value-title" style="font-size:.95rem;margin-bottom:.5rem">Do you offer prescription lenses?</h3><p class="value-text">Yes! Send your prescription after purchase and our optical partners will fit it into any SOLARA frame.</p></div>
+      </div>
+    </section>
+  </main>
+  <div id="contact-footer"></div>
+</div>
+
+<!-- Shared footer template -->
+<template id="footer-tpl">
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <span class="nav-logo" onclick="showPage('home')" style="display:inline-block;margin-bottom:1rem;cursor:pointer">SOLARA</span>
+        <p>Where luxury meets vision. Handcrafted eyewear for those who see the world differently.</p>
+        <div class="footer-social">
+          <a href="#" class="social-link">📷</a><a href="#" class="social-link">𝕏</a><a href="#" class="social-link">📌</a><a href="#" class="social-link">🎵</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Shop</h4>
+        <ul>
+          <li><a onclick="showPage('shop')">All Styles</a></li>
+          <li><a onclick="showShopFiltered('men')">Men</a></li>
+          <li><a onclick="showShopFiltered('women')">Women</a></li>
+          <li><a onclick="showShopFiltered('unisex')">Unisex</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a onclick="showPage('about')">Our Story</a></li>
+          <li><a onclick="showPage('contact')">Contact</a></li>
+          <li><a href="#">Sustainability</a></li>
+          <li><a href="#">Press</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Newsletter</h4>
+        <p style="font-size:.82rem;color:var(--muted);margin-bottom:1rem">New drops. Early access. Zero spam.</p>
+        <div class="footer-newsletter">
+          <form class="nl-form">
+            <input type="email" placeholder="your@email.com" required>
+            <button type="submit" class="btn btn-primary">Subscribe</button>
+            <p class="success-msg">✓ You're on the list!</p>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2024 SOLARA. All rights reserved.</p>
+      <p><a href="#">Privacy</a> · <a href="#">Terms</a> · <a href="#">Shipping</a></p>
+    </div>
+  </footer>
+</template>
+
+<div id="toast-container"></div>
+<button id="back-top" aria-label="Back to top">↑</button>
+
+<script>
+'use strict';
+
+/* ── Data ── */
+const PRODUCTS = [
+  {id:1,name:'Onyx Eclipse',category:'unisex',price:289,oldPrice:349,badge:'Best Seller',rating:4.8,reviews:142,featured:true,colors:['#1a1a1a','#8B4513','#1a3a5c'],sizes:['S','M','L'],desc:'Sculpted from ultra-lightweight titanium alloy, the Onyx Eclipse offers total UV400 protection wrapped in an aesthetic that commands attention. Polarized lenses eliminate glare while preserving true-to-life color rendering.',sku:'SOL-001',img:'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&q=80',imgs:['https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&q=80','https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&q=80']},
+  {id:2,name:'Aurora Noir',category:'women',price:245,oldPrice:null,badge:'New',rating:4.9,reviews:87,featured:true,colors:['#000','#c9a84c','#8a2be2'],sizes:['S','M'],desc:'Inspired by the shifting gradients of a northern sky, Aurora Noir frames are crafted from bio-acetate with gradient-tinted lenses that shift from deep charcoal to transparent amber.',sku:'SOL-002',img:'https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=600&q=80',imgs:['https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=600&q=80']},
+  {id:3,name:'Solstice Pro',category:'men',price:320,oldPrice:399,badge:'Sale',rating:4.7,reviews:203,featured:true,colors:['#1a1a2e','#2d4a1e','#3d1515'],sizes:['M','L','XL'],desc:'Engineered for the modern professional who moves between boardroom and beach. Features photochromic lenses that adapt to changing light, housed in solid-steel frames with adjustable nose pads.',sku:'SOL-003',img:'https://images.unsplash.com/photo-1473496169904-658ba7574b0d?w=600&q=80',imgs:['https://images.unsplash.com/photo-1473496169904-658ba7574b0d?w=600&q=80']},
+  {id:4,name:'Velvet Veil',category:'women',price:198,oldPrice:null,badge:null,rating:4.6,reviews:64,featured:false,colors:['#4a0020','#000','#c9a84c'],sizes:['S','M'],desc:'A cat-eye silhouette reborn in the modern era. Velvet Veil combines oversized drama with precision optics, perfect for those who view fashion as a fine art form.',sku:'SOL-004',img:'https://images.unsplash.com/photo-1508296695146-257a814070b4?w=600&q=80',imgs:['https://images.unsplash.com/photo-1508296695146-257a814070b4?w=600&q=80']},
+  {id:5,name:'Apex Aviator',category:'men',price:265,oldPrice:null,badge:null,rating:4.8,reviews:176,featured:false,colors:['#c9a84c','#1a1a1a'],sizes:['M','L'],desc:'The timeless aviator, elevated. Apex features double-bridge titanium construction, mineral glass lenses with anti-reflective coating, and adjustable cable temples for all-day wear.',sku:'SOL-005',img:'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&q=80',imgs:['https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&q=80']},
+  {id:6,name:'Lunar Shield',category:'unisex',price:350,oldPrice:420,badge:'Sale',rating:4.9,reviews:98,featured:false,colors:['#000','#1a1a2e'],sizes:['M','L','XL'],desc:"The Lunar Shield's wraparound polycarbonate lens provides 180° UV coverage while the geometric frame makes a statement that transcends conventional eyewear.",sku:'SOL-006',img:'https://images.unsplash.com/photo-1534126511673-b6899657816a?w=600&q=80',imgs:['https://images.unsplash.com/photo-1534126511673-b6899657816a?w=600&q=80']},
+  {id:7,name:'Seraph Round',category:'women',price:178,oldPrice:null,badge:'New',rating:4.5,reviews:41,featured:false,colors:['#c9a84c','#8B4513','#000'],sizes:['S','M'],desc:'Perfect circles for imperfect days. Seraph Round combines ultra-thin stainless steel rims with optically superior lenses and a minimalist aesthetic that pairs with everything.',sku:'SOL-007',img:'https://images.unsplash.com/photo-1583394293253-4b6e3c7d4c4c?w=600&q=80',imgs:['https://images.unsplash.com/photo-1583394293253-4b6e3c7d4c4c?w=600&q=80']},
+  {id:8,name:'Storm Rider',category:'men',price:299,oldPrice:null,badge:null,rating:4.7,reviews:115,featured:false,colors:['#2d4a1e','#1a1a1a','#c9a84c'],sizes:['M','L','XL'],desc:'Built to withstand whatever nature throws at you. Storm Rider features impact-resistant TR90 frames and polarized lenses with hydrophobic coating — ready for adventure.',sku:'SOL-008',img:'https://images.unsplash.com/photo-1473496169904-658ba7574b0d?w=600&q=80',imgs:['https://images.unsplash.com/photo-1473496169904-658ba7574b0d?w=600&q=80']},
+  {id:9,name:'Cipher Square',category:'unisex',price:225,oldPrice:null,badge:null,rating:4.6,reviews:73,featured:false,colors:['#000','#1a3a5c','#c9a84c'],sizes:['S','M','L'],desc:'Clean lines, sharp angles, zero compromise. The Cipher Square is cut from a single piece of premium acetate block, giving each pair a unique depth and character.',sku:'SOL-009',img:'https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&q=80',imgs:['https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=600&q=80']},
+  {id:10,name:'Dusk Mirage',category:'women',price:310,oldPrice:380,badge:'Sale',rating:4.8,reviews:56,featured:false,colors:['#4a0020','#8a2be2','#000'],sizes:['S','M'],desc:'Gradient rose-to-violet lenses embedded in handcrafted acetate frames turn heads at every golden hour gathering.',sku:'SOL-010',img:'https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=600&q=80',imgs:['https://images.unsplash.com/photo-1509695507497-903c140c43b0?w=600&q=80']},
+  {id:11,name:'Stealth Wrap',category:'men',price:385,oldPrice:null,badge:'New',rating:4.9,reviews:29,featured:false,colors:['#000','#1a1a2e'],sizes:['M','L'],desc:"The Stealth Wrap's seamless frame merges frame and shield into one fluid form, with military-grade polarization and a matte non-reflective finish.",sku:'SOL-011',img:'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&q=80',imgs:['https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600&q=80']},
+  {id:12,name:'Ivory Ember',category:'unisex',price:215,oldPrice:null,badge:null,rating:4.5,reviews:88,featured:false,colors:['#f5f5dc','#c9a84c','#8B4513'],sizes:['S','M','L'],desc:"Ivory Ember's cream-colored acetate frames contrast beautifully with amber-gradient lenses, offering a retro-luxe feel that's utterly contemporary.",sku:'SOL-012',img:'https://images.unsplash.com/photo-1534126511673-b6899657816a?w=600&q=80',imgs:['https://images.unsplash.com/photo-1534126511673-b6899657816a?w=600&q=80']},
+];
+
+const SAMPLE_REVIEWS = [
+  {name:'Alexandra M.',rating:5,date:'Nov 2024',text:"Absolutely stunning. The craftsmanship is unlike anything I've owned at this price point. People stop me on the street to ask where I got them.",verified:true},
+  {name:'James T.',rating:5,date:'Oct 2024',text:'Bought these for a trip to Santorini — performed flawlessly. Polarization is top-notch, zero distortion, and they look incredible in photos.',verified:true},
+  {name:'Serena K.',rating:4,date:'Oct 2024',text:'Gorgeous frames. The fit is slightly narrow for my face shape but the quality more than compensates. Will size up next time.',verified:false},
+  {name:'Marcus D.',rating:5,date:'Sep 2024',text:"Third pair from SOLARA. They never disappoint. The attention to detail — the hinges, the case, even the cleaning cloth — it all speaks luxury.",verified:true},
+];
+
+/* ── State ── */
+let cart = JSON.parse(localStorage.getItem('solara_cart')||'[]');
+let currentPage = 'home';
+let currentProductId = 1;
+let shopFilters = {category:'all',maxPrice:500,sort:'featured'};
+
+/* ── Helpers ── */
+function starsHTML(r){
+  let s='';
+  for(let i=1;i<=5;i++) s+=`<span class="star${i<=Math.floor(r)?'':i===Math.floor(r)+1&&r%1>=.5?' style="opacity:.6"':' empty'}">★</span>`;
+  return s;
+}
+function fmt(n){return '$'+n.toFixed(0)}
+function saveCart(){localStorage.setItem('solara_cart',JSON.stringify(cart))}
+function getP(id){return PRODUCTS.find(p=>p.id===parseInt(id))}
+
+/* ── Toast ── */
+function showToast(msg,icon='✓'){
+  const c=document.getElementById('toast-container');
+  if(!c)return;
+  const t=document.createElement('div');
+  t.className='toast';
+  t.innerHTML=`<span class="toast-icon">${icon}</span><span>${msg}</span>`;
+  c.appendChild(t);
+  setTimeout(()=>{t.classList.add('removing');t.addEventListener('animationend',()=>t.remove())},3200);
+}
+
+/* ── Cart ── */
+function addToCart(id,qty=1,size='M'){
+  const p=getP(id);if(!p)return;
+  const key=`${id}-${size}`;
+  const ex=cart.find(i=>i.key===key);
+  if(ex)ex.qty+=qty;
+  else cart.push({key,id,qty,size,name:p.name,price:p.price,img:p.img});
+  saveCart();updateCartUI();showToast(`${p.name} added to cart`);
+}
+function removeFromCart(key){cart=cart.filter(i=>i.key!==key);saveCart();updateCartUI();renderCartItems()}
+function updateQty(key,d){const i=cart.find(x=>x.key===key);if(i){i.qty=Math.max(1,i.qty+d);saveCart();updateCartUI();renderCartItems()}}
+function cartTotal(){return cart.reduce((s,i)=>s+i.price*i.qty,0)}
+function cartCount(){return cart.reduce((s,i)=>s+i.qty,0)}
+function updateCartUI(){
+  document.querySelectorAll('.cart-count').forEach(el=>{
+    el.textContent=cartCount();el.classList.toggle('visible',cartCount()>0);
+  });
+  const t=document.querySelector('.cart-total-price');if(t)t.textContent=fmt(cartTotal());
+}
+function renderCartItems(){
+  const c=document.querySelector('.cart-items');if(!c)return;
+  if(!cart.length){c.innerHTML=`<div class="cart-empty"><span class="cart-empty-icon">🕶️</span><p>Your cart is empty</p><button class="btn btn-outline" style="margin-top:.5rem" onclick="closeCart();showPage('shop')">Browse Collection</button></div>`;return;}
+  c.innerHTML=cart.map(i=>`
+    <div class="cart-item">
+      <img class="cart-item-img" src="${i.img}" alt="${i.name}">
+      <div>
+        <div class="cart-item-name">${i.name}</div>
+        <div class="cart-item-price">${fmt(i.price)}</div>
+        <div class="cart-item-qty">
+          <button class="qty-btn" onclick="updateQty('${i.key}',-1)">−</button>
+          <span class="qty-num">${i.qty}</span>
+          <button class="qty-btn" onclick="updateQty('${i.key}',1)">+</button>
+          <span style="font-size:.75rem;color:var(--muted);margin-left:.25rem">${i.size}</span>
+        </div>
+      </div>
+      <button class="cart-item-remove" onclick="removeFromCart('${i.key}')">✕</button>
+    </div>`).join('');
+}
+function openCart(){document.getElementById('cart-drawer').classList.add('open');document.querySelector('.cart-overlay').classList.add('visible');renderCartItems();document.body.style.overflow='hidden'}
+function closeCart(){document.getElementById('cart-drawer').classList.remove('open');document.querySelector('.cart-overlay').classList.remove('visible');document.body.style.overflow=''}
+
+/* ── Page Router ── */
+function showPage(name, scroll=true){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pg=document.getElementById('page-'+name);
+  if(!pg)return;
+  pg.classList.add('active');
+  currentPage=name;
+  if(scroll)window.scrollTo({top:0,behavior:'instant'});
+  document.querySelectorAll('.nav-links a[data-page]').forEach(a=>a.classList.toggle('active',a.dataset.page===name));
+  setTimeout(initReveal,60);
+  if(name==='home')renderHome();
+  if(name==='shop')renderShop();
+  if(name==='product')renderProduct(currentProductId);
+}
+
+function showProduct(id){
+  currentProductId=id;
+  showPage('product');
+}
+
+function showShopFiltered(cat){
+  shopFilters.category=cat;
+  showPage('shop');
+  setTimeout(()=>{
+    const inp=document.querySelector(`input[name="category"][value="${cat}"]`);
+    if(inp)inp.checked=true;
+  },50);
+}
+
+/* ── Reveal ── */
+function initReveal(){
+  const els=document.querySelectorAll('#page-'+currentPage+' [data-reveal]:not(.visible)');
+  if(!els.length)return;
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}});
+  },{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+  els.forEach((el,i)=>{el.style.transitionDelay=(i*.07)+'s';obs.observe(el)});
+}
+
+/* ── Product Card ── */
+function buildCard(p,i=0){
+  const badge=p.badge?`<span class="product-badge badge-${p.badge==='Sale'?'sale':'new'}">${p.badge}</span>`:'';
+  const old=p.oldPrice?`<span class="product-price-old">${fmt(p.oldPrice)}</span>`:'';
+  return `<div class="product-card" data-reveal style="transition-delay:${i*.08}s" onclick="showProduct(${p.id})">
+    <div class="product-img-wrap">
+      <img src="${p.img}" alt="${p.name}" loading="lazy">
+      ${badge}
+      <span class="product-quick-add">View Product →</span>
+    </div>
+    <div class="product-info">
+      <div class="product-category">${p.category}</div>
+      <div class="product-name">${p.name}</div>
+      <div class="product-price-row"><span class="product-price">${fmt(p.price)}</span>${old}</div>
+      <div class="product-stars">${starsHTML(p.rating)}</div>
+    </div>
+  </div>`;
+}
+
+/* ── Footer injection ── */
+function injectFooters(){
+  const tpl=document.getElementById('footer-tpl');
+  ['home','shop','product','about','contact'].forEach(id=>{
+    const slot=document.getElementById(id+'-footer');
+    if(slot&&tpl){slot.innerHTML='';slot.appendChild(tpl.content.cloneNode(true))}
+  });
+  document.querySelectorAll('.nl-form').forEach(form=>{
+    form.addEventListener('submit',e=>{e.preventDefault();form.querySelector('.success-msg').style.display='block';form.querySelector('input').value='';showToast('Welcome to SOLARA!','✉️')});
+  });
+}
+
+/* ── Home ── */
+function renderHome(){
+  const fg=document.getElementById('featured-grid');
+  if(fg&&!fg.hasChildNodes()){fg.innerHTML=PRODUCTS.filter(p=>p.featured).map((p,i)=>buildCard(p,i)).join('');setTimeout(initReveal,60)}
+  const bg=document.getElementById('best-grid');
+  if(bg&&!bg.hasChildNodes()){bg.innerHTML=[...PRODUCTS].sort((a,b)=>b.reviews-a.reviews).slice(0,4).map((p,i)=>buildCard(p,i)).join('');setTimeout(initReveal,60)}
+}
+
+/* ── Shop ── */
+function renderShop(){
+  let products=[...PRODUCTS];
+  if(shopFilters.category!=='all')products=products.filter(p=>p.category===shopFilters.category);
+  products=products.filter(p=>p.price<=shopFilters.maxPrice);
+  if(shopFilters.sort==='price-asc')products.sort((a,b)=>a.price-b.price);
+  else if(shopFilters.sort==='price-desc')products.sort((a,b)=>b.price-a.price);
+  else if(shopFilters.sort==='rating')products.sort((a,b)=>b.rating-a.rating);
+  else if(shopFilters.sort==='newest')products.sort((a,b)=>(b.badge==='New'?1:0)-(a.badge==='New'?1:0));
+  const grid=document.getElementById('shop-grid');
+  const count=document.getElementById('results-count');
+  if(grid)grid.innerHTML=products.length?products.map((p,i)=>buildCard(p,i)).join(''):`<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:4rem 0"><div style="font-size:3rem;margin-bottom:1rem">🕶️</div><p>No styles match your filters.</p></div>`;
+  if(count)count.innerHTML=`<span>${products.length}</span> styles found`;
+  setTimeout(initReveal,60);
+
+  // bind filters
+  document.querySelectorAll('input[name="category"]').forEach(inp=>{
+    if(inp.value===shopFilters.category)inp.checked=true;
+    inp.onchange=()=>{shopFilters.category=inp.value;renderShop()};
+  });
+  const pr=document.getElementById('price-range'),pl=document.getElementById('price-label');
+  if(pr){pr.value=shopFilters.maxPrice;pr.oninput=()=>{shopFilters.maxPrice=parseInt(pr.value);pl.textContent=`Up to $${pr.value}`;renderShop()}}
+  const ss=document.getElementById('sort-select');
+  if(ss){ss.value=shopFilters.sort;ss.onchange=()=>{shopFilters.sort=ss.value;renderShop()}}
+  const reset=document.querySelector('.sidebar-reset');
+  if(reset)reset.onclick=()=>{shopFilters={category:'all',maxPrice:500,sort:'featured'};if(pr){pr.value=500;pl.textContent='Up to $500'}if(ss)ss.value='featured';document.querySelectorAll('input[name="category"]').forEach(i=>i.checked=i.value==='all');renderShop()};
+}
+
+/* ── Product Detail ── */
+function renderProduct(id){
+  const p=getP(id);if(!p)return;
+  document.getElementById('breadcrumb-name').textContent=p.name;
+  document.getElementById('d-category').textContent=p.category.toUpperCase();
+  document.getElementById('d-name').textContent=p.name;
+  document.getElementById('d-stars').innerHTML=starsHTML(p.rating);
+  document.getElementById('d-reviews').textContent=`(${p.reviews} reviews)`;
+  document.getElementById('d-price').textContent=fmt(p.price);
+  const op=document.getElementById('d-old-price'),db=document.getElementById('d-badge');
+  if(p.oldPrice){op.textContent=fmt(p.oldPrice);op.style.display='';db.textContent=`-${Math.round((1-p.price/p.oldPrice)*100)}%`;db.style.display=''}
+  else{op.style.display='none';db.style.display='none'}
+  document.getElementById('d-desc').textContent=p.desc;
+  document.querySelector('.meta-sku').textContent=p.sku;
+
+  const mi=document.getElementById('main-product-img');mi.src=p.imgs[0];
+  const tr=document.getElementById('thumb-row');
+  if(p.imgs.length>1){
+    tr.innerHTML=p.imgs.map((src,i)=>`<div class="thumb ${i===0?'active':''}" onclick="selectThumb(this,'${src}')"><img src="${src}" alt="View ${i+1}"></div>`).join('');
+    tr.style.display='flex';
+  }else{tr.style.display='none'}
+
+  const dc=document.getElementById('d-colors');
+  dc.innerHTML=p.colors.map((c,i)=>`<div class="color-swatch ${i===0?'active':''}" style="background:${c}" onclick="selectSwatch(this,'${c}')"></div>`).join('');
+
+  const ds=document.getElementById('d-sizes');
+  ds.innerHTML=p.sizes.map((s,i)=>`<button class="size-btn ${i===0?'active':''}" onclick="selectSz(this)">${s}</button>`).join('');
+
+  const qi=document.querySelector('.qty-input');if(qi)qi.value=1;
+  document.querySelector('.qty-dec').onclick=()=>{if(qi)qi.value=Math.max(1,parseInt(qi.value)-1)};
+  document.querySelector('.qty-inc').onclick=()=>{if(qi)qi.value=Math.min(10,parseInt(qi.value)+1)};
+
+  const btn=document.querySelector('.add-cart-btn');
+  btn.textContent='Add to Cart';btn.style.background='';
+  btn.onclick=()=>{
+    const sz=document.querySelector('.size-btn.active')?.textContent||'M';
+    const qty=parseInt(document.querySelector('.qty-input')?.value||1);
+    addToCart(p.id,qty,sz);
+    btn.textContent='Added! ✓';btn.style.background='#1a3a1a';
+    setTimeout(()=>{btn.textContent='Add to Cart';btn.style.background=''},2000);
+  };
+  document.querySelector('.wishlist-btn').onclick=()=>showToast('Saved to wishlist','♥');
+
+  // Related
+  const rg=document.getElementById('related-grid');
+  rg.innerHTML=PRODUCTS.filter(x=>x.id!==p.id&&(x.category===p.category||x.featured)).slice(0,4).map((x,i)=>buildCard(x,i)).join('');
+
+  // Reviews
+  const rs=document.getElementById('reviews-summary');
+  rs.innerHTML=`<div class="big-rating"><div class="big-score">${p.rating}</div><div class="big-stars">${starsHTML(p.rating)}</div><div class="big-count">${p.reviews} reviews</div></div>
+    <div class="rating-bars">
+      ${[{l:'5★',p:72,c:102},{l:'4★',p:18,c:26},{l:'3★',p:6,c:9},{l:'2★',p:2,c:3},{l:'1★',p:2,c:2}].map(b=>`
+      <div class="rating-bar-row"><span class="bar-label">${b.l}</span><div class="bar-track"><div class="bar-fill" style="width:${b.p}%"></div></div><span class="bar-count">${b.c}</span></div>`).join('')}
+    </div>`;
+
+  const rl=document.getElementById('review-list');
+  rl.innerHTML=SAMPLE_REVIEWS.map(r=>`
+    <div class="review-card">
+      <div class="review-top">
+        <div class="reviewer"><div class="reviewer-avatar">${r.name[0]}</div><div><div class="reviewer-name">${r.name}</div><div class="reviewer-date">${r.date}</div></div></div>
+        <div class="review-stars">${starsHTML(r.rating)}</div>
+      </div>
+      <div class="review-text">${r.text}</div>
+      ${r.verified?'<div class="verified-badge">✓ Verified Purchase</div>':''}
+    </div>`).join('');
+
+  // Star picker
+  let selRating=0;
+  document.querySelectorAll('.star-pick').forEach((s,i)=>{
+    s.onmouseenter=()=>document.querySelectorAll('.star-pick').forEach((x,j)=>x.classList.toggle('lit',j<=i));
+    s.onmouseleave=()=>document.querySelectorAll('.star-pick').forEach((x,j)=>x.classList.toggle('lit',j<selRating));
+    s.onclick=()=>{selRating=i+1;document.querySelectorAll('.star-pick').forEach((x,j)=>x.classList.toggle('lit',j<selRating))};
+  });
+
+  const rf=document.getElementById('review-form');
+  rf.onsubmit=e=>{
+    e.preventDefault();
+    if(!selRating){showToast('Please select a rating','⚠️');return}
+    const name=rf.querySelector('input[name="name"]').value;
+    const text=rf.querySelector('textarea').value;
+    const card=document.createElement('div');card.className='review-card';card.style.animation='slideIn .3s ease';
+    card.innerHTML=`<div class="review-top"><div class="reviewer"><div class="reviewer-avatar">${name[0]}</div><div><div class="reviewer-name">${name}</div><div class="reviewer-date">Just now</div></div></div><div class="review-stars">${starsHTML(selRating)}</div></div><div class="review-text">${text}</div>`;
+    rl.prepend(card);rf.reset();selRating=0;document.querySelectorAll('.star-pick').forEach(s=>s.classList.remove('lit'));
+    showToast('Review submitted — thank you!','🙏');
+  };
+
+  setTimeout(initReveal,60);
+}
+
+function selectThumb(el,src){document.querySelectorAll('#thumb-row .thumb').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById('main-product-img').src=src}
+function selectSwatch(el,color){document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('active'));el.classList.add('active');document.getElementById('selected-color').textContent=color}
+function selectSz(el){document.querySelectorAll('.size-btn').forEach(s=>s.classList.remove('active'));el.classList.add('active');document.getElementById('selected-size').textContent=el.textContent}
+
+/* ── Contact ── */
+function initContact(){
+  const f=document.getElementById('contact-form');
+  if(!f)return;
+  f.onsubmit=e=>{e.preventDefault();f.style.display='none';document.getElementById('form-success').style.display='block';showToast("Message sent! We'll reply within 24hrs.",'✉️')};
+}
+
+/* ── Navbar ── */
+function initNavbar(){
+  const nb=document.getElementById('navbar');
+  window.addEventListener('scroll',()=>{
+    nb.classList.toggle('scrolled',window.scrollY>40);
+    document.getElementById('back-top').classList.toggle('visible',window.scrollY>400);
+  },{passive:true});
+  const hb=document.querySelector('.hamburger'),mm=document.querySelector('.mobile-menu');
+  hb.addEventListener('click',()=>{hb.classList.toggle('open');mm.classList.toggle('open')});
+  mm.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{hb.classList.remove('open');mm.classList.remove('open')}));
+  document.querySelectorAll('.cart-btn').forEach(b=>b.addEventListener('click',openCart));
+  document.querySelector('.cart-close').addEventListener('click',closeCart);
+  document.querySelector('.cart-overlay').addEventListener('click',closeCart);
+  document.getElementById('back-top').addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+}
+
+/* ── Popup ── */
+function initPopup(){
+  const popup=document.getElementById('discount-popup');
+  if(sessionStorage.getItem('popup_dismissed'))return;
+  setTimeout(()=>popup.classList.add('show'),5000);
+  const dismiss=()=>{popup.classList.remove('show');sessionStorage.setItem('popup_dismissed','1')};
+  popup.querySelector('.popup-close').addEventListener('click',dismiss);
+  popup.querySelector('.popup-skip').addEventListener('click',dismiss);
+  popup.querySelector('.popup-bg').addEventListener('click',dismiss);
+  popup.querySelector('.popup-form').addEventListener('submit',e=>{e.preventDefault();dismiss();showToast('10% off code: SOLARA10 — enjoy!','🎁')});
+}
+
+/* ── Loader ── */
+function initLoader(){
+  const l=document.getElementById('page-loader');
+  const hide=()=>setTimeout(()=>l.classList.add('hidden'),500);
+  if(document.readyState==='complete')hide();
+  else window.addEventListener('load',hide);
+  setTimeout(()=>l.classList.add('hidden'),2500);
+}
+
+/* ── Boot ── */
+document.addEventListener('DOMContentLoaded',()=>{
+  initLoader();
+  injectFooters();
+  initNavbar();
+  initPopup();
+  initContact();
+  updateCartUI();
+  renderHome();
+  showPage('home',false);
+  setTimeout(initReveal,200);
+});
+</script>
+</body>
+</html>
